@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<table>
+    <tr>
+        <th>Amount</th>
+        <th>Reference</th>
+        <th>Category</th>
+        <th>Transaction Date</th>
+    </tr>
+    {% for transaction in transactions %}
+    <tr>
+        <td>{{transaction.amount}}</td>
+        <td>{{transaction.reference}}</td>
+        <td>{{transaction.category.name}}</td>
+        <td>{{transaction.transaction_date}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}
