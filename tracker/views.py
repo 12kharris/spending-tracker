@@ -7,7 +7,10 @@ from .models import Category, Transaction
 
 # Create your views here.
 def home(request):
-    return HttpResponse("home")
+    return render(
+        request,
+        "tracker/home.html"
+    )
 
 
 def dashboard(request):

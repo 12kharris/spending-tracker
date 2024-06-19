@@ -1,3 +1,9 @@
+{% url 'home' as home_url %}
+{% url 'dashboard' as dashboard_url %}
+{% url 'account_login' as login_url %}
+{% url 'account_signup' as signup_url %}
+{% url 'account_logout' as logout_url %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +26,19 @@
 </head>
 <body>
 
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+        <a class="navbar-brand" href="{% url 'dashboard' %}">Dashboard</a>
+        {% if user.is_authenticated %}
+        <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page"
+            href="{% url 'account_logout' %}">Logout</a>
+        {% else %}
+        <a class="nav-link {% if request.path == signup_url %}active{% endif %}" aria-current="page"
+            href="{% url 'account_signup' %}">Register</a>
+        <a class="nav-link {% if request.path == login_url %}active{% endif %}" aria-current="page"
+            href="{% url 'account_login' %}">Login</a>
+        {% endif %}
+    </nav>
     <main>
         <!--main content goes here-->
         {% block content %}
