@@ -30,7 +30,7 @@ print(TEMPLATES_DIR)
 SECRET_KEY = 'django-insecure-%*wuam0#!zip$8bd!)esao62-t5dccg4o4(yv5&sx^ga-dluz%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["8000-12kharris-spendingtrack-c4ss8sh51fj.ws.codeinstitute-ide.net", '.herokuapp.com']
 
@@ -52,7 +52,7 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/dashboard'
 LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
