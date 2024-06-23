@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
 
 {% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
 
 <div>
-    <form method="post">
+    <form id="form-transaction" method="post">
         {{ transaction_form | crispy }}
         {% csrf_token %}
-        <button type="submit">Add Transaction</button>
+        <button type="submit" id="btn-submit">Add Transaction</button>
     </form>
 </div>
 
@@ -19,11 +20,11 @@
         <th>Transaction Date</th>
     </tr>
     {% for transaction in transactions %}
-    <tr>
-        <td>{{transaction.amount}}</td>
-        <td>{{transaction.reference}}</td>
-        <td>{{transaction.category.name}}</td>
-        <td>{{transaction.transaction_date}}</td>
+    <tr id = "row-{{transaction.id}}">
+        <td id="amount-{{transaction.id}}">{{transaction.amount}}</td>
+        <td id="reference{{transaction.id}}">{{transaction.reference}}</td>
+        <td id="category-{{transaction.id}}">{{transaction.category.name}}</td>
+        <td id="transaction_date-{{transaction.id}}">{{transaction.transaction_date}}</td>
         <td>
             <button class="btn-edit-transaction" transaction_id = "{{transaction.id}}">Edit</button>
         </td>
@@ -32,3 +33,7 @@
 </table>
 
 {% endblock content %}
+
+{% block extras %}
+<script src="{% static 'js/transactions.js' %}"></script>
+{% endblock %}

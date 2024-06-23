@@ -46,3 +46,23 @@ def dashboard(request):
             "transaction_form": transaction_form
         }
     )
+
+
+def transaction_edit(request, transaction_id):
+    if request.method == "POST":
+        queryset = Transaction.objects.filter(user=request.user, id=transaction_id)
+        transaction = get_object_or_404(queryset, id=transaction_id)
+        transaction_form = TransactionForm(data=request.POST)
+
+        if transaction_form.is_valid() and transaction.user == request.user:
+            cd = transaction_form.cleaned_data
+            transaction.amount = cd['amount']
+            transaction.reference = cd['reference']
+            transaction.category = cd['category']
+            transaction.transaction_date = cd['transaction_date']
+            transaction.save()
+            messages.add_message(request, messages.SUCCESS, 'Transaction Updated!')
+        else:
+            messages.add_message(request, messages.ERROR, 'Error updating transaction!')
+
+    return HttpResponseRedirect(reverse('dashboard'))
