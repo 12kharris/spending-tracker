@@ -24,6 +24,9 @@
         <td>{{transaction.reference}}</td>
         <td>{{transaction.category.name}}</td>
         <td>{{transaction.transaction_date}}</td>
+        <td>
+            <button class="btn-edit-transaction" transaction_id = "{{transaction.id}}">Edit</button>
+        </td>
     </tr>
     {% endfor %}
 </table>
