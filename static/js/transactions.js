@@ -1,4 +1,5 @@
 const edit_buttons = document.getElementsByClassName("btn-edit-transaction");
+const delete_buttons = document.getElementsByClassName("btn-delete-transaction");
 const submit_button = document.getElementById("btn-submit");
 const transaction_form = document.getElementById("form-transaction");
 const transaction_form_amount = document.getElementById("id_amount");
@@ -7,6 +8,10 @@ const transaction_form_category = document.getElementById("id_category");
 const transaction_form_date = document.getElementById("id_transaction_date");
 const transaction_category_options = transaction_form_category.getElementsByTagName("option");
 
+
+/**
+ * Add event listeners which populate the transaction form with data from the selected transaction
+ */
 for(let button of edit_buttons) {
     button.addEventListener("click", (e) => {
         let transaction_id = e.target.getAttribute("transaction_id");
@@ -31,3 +36,4 @@ for(let button of edit_buttons) {
         submit_button.innerText = "Update";
     })
 }
+

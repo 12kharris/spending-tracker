@@ -6,4 +6,6 @@ urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
     path('dashboard/transaction_edit/<int:transaction_id>',
          views.transaction_edit, name='transaction_edit'),
+    path('dashboard/transaction_delete/<int:transaction_id>',
+         views.transaction_delete, name='transaction_delete'),
 ]

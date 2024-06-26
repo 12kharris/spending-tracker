@@ -28,6 +28,9 @@
         <td>
             <button class="btn-edit-transaction" transaction_id = "{{transaction.id}}">Edit</button>
         </td>
+        <td>
+            <a class="btn-delete-transaction" transaction_id = "{{transaction.id}}" href="transaction_delete/{{transaction.id}}">Delete</a>
+        </td>
     </tr>
     {% endfor %}
 </table>
@@ -35,5 +38,5 @@
 {% endblock content %}
 
 {% block extras %}
-<script src="{% static 'js/transactions.js' %}"></script>
+<script src="{% static 'js/transactions.js' %}" type="text/javascript"></script>
 {% endblock %}

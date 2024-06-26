@@ -66,3 +66,15 @@ def transaction_edit(request, transaction_id):
             messages.add_message(request, messages.ERROR, 'Error updating transaction!')
 
     return HttpResponseRedirect(reverse('dashboard'))
+
+
+def transaction_delete(request, transaction_id):
+    transaction = get_object_or_404(Transaction.objects.filter(user=request.user, id = transaction_id), id = transaction_id)
+
+    if transaction.user == request.user:
+        transaction.delete()
+        messages.add_message(request, messages.SUCCESS, "Transaction deleted") #could add details of the deleted transaction
+    else:
+        messages.add_message(request, messages.ERROR, "Error deleting transaction")
+
+    return HttpResponseRedirect(reverse('dashboard'))
