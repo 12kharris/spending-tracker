@@ -3,6 +3,10 @@
 {% block content %}
 {% load crispy_forms_tags %}
 {% load static %}
+<div style="height: 500px;">
+    <canvas id="daily-chart" width="500" height="500"></canvas>
+</div>
+
 
 <div>
     <form id="form-transaction" method="post">
@@ -13,7 +17,7 @@
 </div>
 
 <table>
-    <tr>
+    <tr id="table-headers">
         <th>Amount</th>
         <th>Reference</th>
         <th>Category</th>
@@ -21,10 +25,10 @@
     </tr>
     {% for transaction in transactions %}
     <tr id = "row-{{transaction.id}}">
-        <td id="amount-{{transaction.id}}">{{transaction.amount}}</td>
-        <td id="reference{{transaction.id}}">{{transaction.reference}}</td>
-        <td id="category-{{transaction.id}}">{{transaction.category.name}}</td>
-        <td id="transaction_date-{{transaction.id}}">{{transaction.transaction_date}}</td>
+        <td id="amount-{{transaction.id}}" class="amount">{{transaction.amount}}</td>
+        <td id="reference{{transaction.id}}" class="reference">{{transaction.reference}}</td>
+        <td id="category-{{transaction.id}}" class="category">{{transaction.category.name}}</td>
+        <td id="transaction_date-{{transaction.id}}" class="date">{{transaction.transaction_date}}</td>
         <td>
             <button class="btn-edit-transaction" transaction_id = "{{transaction.id}}">Edit</button>
         </td>
@@ -38,5 +42,8 @@
 {% endblock content %}
 
 {% block extras %}
+<!--chart.js script-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 <script src="{% static 'js/transactions.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/dashboard_charts.js' %}" type="text/javascript"></script>
 {% endblock %}

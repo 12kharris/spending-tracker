@@ -42,7 +42,7 @@ def dashboard(request):
         request,
         "tracker/dashboard.html",
         {
-            "transactions": transactions,
+            "transactions": transactions.order_by("transaction_date"),
             "transaction_form": transaction_form
         }
     )
