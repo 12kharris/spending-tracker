@@ -4,29 +4,42 @@ const data_rows = document.getElementsByTagName("tr");
 
 console.log(data_rows);
 
-let data = {}
-let counter = 0
+let transactions = {};
+let labels = [];
+let data = [];
+let counter = 0;
+
+/**
+ * get transactions from the data on the page
+ */
 for(row of data_rows) {
-    if(row.getAttribute("id") == "table-headers") continue;
+    if(row.getAttribute("id") == "table-headers") continue; // ignore the header
+    let amount = row.getElementsByClassName("amount")[0].innerText;
+    let ref = row.getElementsByClassName("reference")[0].innerText;
+    let cat = row.getElementsByClassName("category")[0].innerText;
+    let date = row.getElementsByClassName("date")[0].innerText;
     
-    data[counter] = {
-        "amount": row.getElementsByClassName("amount")[0].innerText,
-        "reference": row.getElementsByClassName("reference")[0].innerText,
-        "category": row.getElementsByClassName("category")[0].innerText,
-        "date": row.getElementsByClassName("date")[0].innerText
+    transactions[counter] = {
+        "amount": amount,
+        "reference": ref,
+        "category": cat,
+        "date": date
     };
+
+    labels[counter] = date;
+    data[counter] = amount;
     counter++;
 }
-console.log(data);
+
 
 
 new Chart(daily_chart, {
     type: 'line',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: labels,
       datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: 'Expenditure',
+        data: data,
         borderWidth: 1
       }]
     },
