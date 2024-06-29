@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db import connection
 from django.contrib import messages
-from .models import Category, Transaction
+from .models import Category, Transaction, Daily_Transactions
 from .forms import TransactionForm
 
 # Create your views here.
@@ -17,6 +17,14 @@ def home(request):
 
 def dashboard(request):
     transactions = Transaction.objects.filter(user=request.user).order_by("transaction_date")
+    transactions_by_day = Daily_Transactions.objects.all()#filter(username=request.user, mnth=6).order_by("day_of_year", "cat_name")
+    print(request.user)
+    print(transactions_by_day.count())
+
+    for a in transactions_by_day:
+        print(a.day_of_year)
+        print(a.cat_name)
+        print(a.amount)
 
     if request.method == "POST":
         transaction_form = TransactionForm(data=request.POST)
@@ -43,6 +51,7 @@ def dashboard(request):
         "tracker/dashboard.html",
         {
             "transactions": transactions.order_by("transaction_date"),
+            "transactions_by_day": transactions_by_day,#.order_by("day_of_year", "cat_name"),
             "transaction_form": transaction_form
         }
     )

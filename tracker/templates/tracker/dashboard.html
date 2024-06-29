@@ -7,6 +7,21 @@
     <canvas id="daily-chart" width="500" height="500"></canvas>
 </div>
 
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Amount</th>
+    </tr>
+    {% for day in transactions_by_day %}
+    <tr>
+        <td>{{day.day_of_year}}</td>
+        <td>{{day.cat_name}}</td>
+        <td>{{day.total_expenditure}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
 
 <div>
     <form id="form-transaction" method="post">

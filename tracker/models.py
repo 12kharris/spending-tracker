@@ -28,3 +28,16 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.amount} | {self.reference} | {self.category} | {self.transaction_date}"
+
+
+class Daily_Transactions(models.Model):
+    unique_id   = models.CharField(max_length=255, primary_key=True)
+    day_of_year = models.DateField()
+    mnth = models.IntegerField()
+    username = models.CharField(max_length=150, blank=False)
+    cat_name = models.CharField()
+    total_expenditure = models.DecimalField(decimal_places=2, max_digits=10)
+
+    class Meta:
+        managed = False,
+        db_table = "Daily_Transactions"
