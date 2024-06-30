@@ -41,3 +41,12 @@ class Daily_Transactions(models.Model):
     class Meta:
         managed = False,
         db_table = "Daily_Transactions"
+
+
+class Transactions_by_Day(models.Model):
+    day_of_year = models.DateField()
+    mnth = models.IntegerField()
+    yr = models.IntegerField()
+    username = models.CharField(max_length=150, blank=False)
+    cat_name = models.CharField()
+    total_expenditure = models.DecimalField(decimal_places=2, max_digits=10)
