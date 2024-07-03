@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, reverse
 from django.views import generic
 from django.contrib import messages
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.db import connection
 from django.contrib import messages
 from .models import Category, Transaction, Transactions_by_Day
 from .forms import TransactionForm
+from .charts import generate_category_colours
 
 # Create your views here.
 def home(request):
@@ -14,19 +15,55 @@ def home(request):
         "tracker/home.html"
     )
 
+def get_transactions_by_day(request, month, year):
+    #here do queries for each category and return them to feed into the data sets
+    #could probobly do this more elgantly looping through all categories and feeding them in
+    daily_housing = get_transactions_by_day_by_category(request, month=month, year=year, category="Housing")
+    daily_car = get_transactions_by_day_by_category(request, month=month, year=year, category="Car")
+    daily_groceries = get_transactions_by_day_by_category(request, month=month, year=year, category="Groceries")
+    daily_dining_out = get_transactions_by_day_by_category(request, month=month, year=year, category="Dining Out")
+    daily_subscriptions = get_transactions_by_day_by_category(request, month=month, year=year, category="Subscriptions")
+    daily_clothes = get_transactions_by_day_by_category(request, month=month, year=year, category="Clothes")
+    daily_leisure = get_transactions_by_day_by_category(request, month=month, year=year, category="Leisure")
+    daily_education = get_transactions_by_day_by_category(request, month=month, year=year, category="Education")
+    daily_presents = get_transactions_by_day_by_category(request, month=month, year=year, category="Presents")
+    daily_miscellaneous = get_transactions_by_day_by_category(request, month=month, year=year, category="Miscellaneous")
+    daily_unassigned = get_transactions_by_day_by_category(request, month=month, year=year, category="Unassgined")
 
-def dashboard(request):
-    transactions = Transaction.objects.filter(user=request.user).order_by("transaction_date")
-    month = 6
+    colours = generate_category_colours()
+    
 
-    transactions_by_day = Transactions_by_Day.objects.raw(
+    return JsonResponse({
+        "data": {
+            "labels": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10","11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" ],
+            "datasets": [
+            {
+                "label": 'Housing',
+                "data": daily_housing,
+                "backgroundColor": 'rgba(255, 99, 132, 0.2)',#colours["Housing"],
+            },
+            ]
+        }
+    })
+
+
+def get_transactions_by_day_by_category(request, month, year, category):
+    results = Transactions_by_Day.objects.raw(
         """
         SELECT 1 AS id, * 
         FROM Daily_Transactions 
-        WHERE username = 'demo' AND mnth = 6 AND yr = 2024
+        WHERE username = %s AND mnth = %s AND yr = %s AND cat_name = %s
         ORDER BY day_of_year, cat_name
         """
-        )
+        ,[request.user.username, month, year, category]
+    )
+    
+    daily_res = [res.total_expenditure for res in results]
+    return daily_res
+
+
+def dashboard(request):
+    transactions = Transaction.objects.filter(user=request.user).order_by("transaction_date")
 
     if request.method == "POST":
         transaction_form = TransactionForm(data=request.POST)
@@ -53,7 +90,7 @@ def dashboard(request):
         "tracker/dashboard.html",
         {
             "transactions": transactions.order_by("transaction_date"),
-            "transactions_by_day": transactions_by_day,
+            #"transactions_by_day": transactions_by_day,
             "transaction_form": transaction_form
         }
     )

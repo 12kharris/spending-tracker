@@ -33,22 +33,75 @@ for(row of data_rows) {
 
 
 
-new Chart(daily_chart, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Expenditure',
-        data: data,
-        borderWidth: 1
-      }]
-    },
+// new Chart(daily_chart, {
+//     type: 'line',
+//     data: {
+//       labels: labels,
+//       datasets: [{
+//         label: 'Expenditure',
+//         data: data,
+//         borderWidth: 1
+//       }]
+//     },
+//     options: {
+//         maintainAspectRatio: false,
+//       scales: {
+//         y: {
+//           beginAtZero: true
+//         }
+//       }
+//     }
+//   });
+
+
+const DATA_COUNT = 7;
+const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+  
+const months = ["2024-06-01", "2024-06-02"]
+  const dataset = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'Car',
+        data: [10.0, 25.0],
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      },
+      {
+        label: 'Housing',
+        data: [250.0, 0],
+        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+      },
+      {
+        label: 'Groceries',
+        data: [4.64, 22],
+        backgroundColor: 'rgba(255, 205, 86, 0.2)',
+      },
+    ]
+  };
+  
+      
+      
+
+  const config = {
+    type: 'bar',
+    data: dataset,
     options: {
-        maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Chart.js Bar Chart - Stacked'
+        },
+      },
+      responsive: true,
       scales: {
+        x: {
+          stacked: true,
+        },
         y: {
-          beginAtZero: true
+          stacked: true
         }
       }
     }
-  });
+  };
+
+  const stackedBar = new Chart(daily_chart, config);
