@@ -32,7 +32,7 @@ def get_transactions_by_day(request, month, year):
 
     colours = generate_category_colours()
     
-
+    #https://testdriven.io/blog/django-charts/
     return JsonResponse({
         "data": {
             "labels": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10","11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" ],
@@ -40,7 +40,57 @@ def get_transactions_by_day(request, month, year):
             {
                 "label": 'Housing',
                 "data": daily_housing,
-                "backgroundColor": 'rgba(255, 99, 132, 0.2)',#colours["Housing"],
+                "backgroundColor": colours["Housing"],
+            },
+            {
+                "label": 'Car',
+                "data": daily_car,
+                "backgroundColor": colours["Car"],
+            },
+            {
+                "label": 'Groceries',
+                "data": daily_groceries,
+                "backgroundColor": colours["Groceries"],
+            },
+            {
+                "label": 'Dining Out',
+                "data": daily_dining_out,
+                "backgroundColor": colours["Dining Out"],
+            },
+            {
+                "label": 'Subscriptions',
+                "data": daily_subscriptions,
+                "backgroundColor": colours["Subscriptions"],
+            },
+            {
+                "label": 'Clothing',
+                "data": daily_clothes,
+                "backgroundColor": colours["Clothes"],
+            },
+            {
+                "label": 'Leisure',
+                "data": daily_leisure,
+                "backgroundColor": colours["Leisure"],
+            },
+            {
+                "label": 'Education',
+                "data": daily_education,
+                "backgroundColor": colours["Education"],
+            },
+            {
+                "label": 'Presents',
+                "data": daily_presents,
+                "backgroundColor": colours["Presents"],
+            },
+            {
+                "label": 'Miscellaneous',
+                "data": daily_miscellaneous,
+                "backgroundColor": colours["Miscellaneous"],
+            },
+            {
+                "label": 'Unassigned',
+                "data": daily_unassigned,
+                "backgroundColor": colours["Unassigned"],
             },
             ]
         }

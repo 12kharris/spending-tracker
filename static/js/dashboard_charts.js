@@ -2,8 +2,6 @@ const daily_chart = document.getElementById("daily-chart");
 
 const data_rows = document.getElementsByTagName("tr");
 
-console.log(data_rows);
-
 let transactions = {};
 let labels = [];
 let data = [];
@@ -63,18 +61,18 @@ const months = ["2024-06-01", "2024-06-02"]
     datasets: [
       {
         label: 'Car',
-        data: [10.0, 25.0],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        data: ["10.0", "25.0"],
+        backgroundColor: 'rgba(255, 99, 132, 0.8)',
       },
       {
         label: 'Housing',
         data: [250.0, 0],
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+        backgroundColor: 'rgba(255, 159, 64, 0.8)',
       },
       {
         label: 'Groceries',
         data: [4.64, 22],
-        backgroundColor: 'rgba(255, 205, 86, 0.2)',
+        backgroundColor: 'rgba(255, 205, 86, 0.8)',
       },
     ]
   };
@@ -84,7 +82,6 @@ const months = ["2024-06-01", "2024-06-02"]
 
   const config = {
     type: 'bar',
-    data: dataset,
     options: {
       plugins: {
         title: {
@@ -92,7 +89,7 @@ const months = ["2024-06-01", "2024-06-02"]
           text: 'Chart.js Bar Chart - Stacked'
         },
       },
-      responsive: true,
+      responsive: false,
       scales: {
         x: {
           stacked: true,
@@ -104,4 +101,35 @@ const months = ["2024-06-01", "2024-06-02"]
     }
   };
 
-  const stackedBar = new Chart(daily_chart, config);
+let stackedBar = new Chart(daily_chart, config);
+
+const year = 2024;
+const month = 6;
+
+getChartData(year, month);
+
+
+
+//https://dmitripavlutin.com/fetch-with-json/
+async function getChartData(year, month) {
+  const response = await fetch(`${window.location.href}/${year}/${month}`, {
+    headers: {
+      'Accept': 'application/json'
+    }
+  });
+  const data = await response.json();
+  const labels = data.data.labels;
+  const datasets = data.data.datasets;
+  
+  stackedBar.data.datasets = [];
+  stackedBar.data.labels = [];
+
+  console.log(data)
+
+  stackedBar.data.labels = labels;
+  datasets.forEach(dataset => {
+    stackedBar.data.datasets.push(dataset);
+  });
+  
+  stackedBar.update()
+}
