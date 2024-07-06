@@ -16,8 +16,7 @@ def home(request):
     )
 
 def get_transactions_by_day(request, month, year):
-    #here do queries for each category and return them to feed into the data sets
-    #could probobly do this more elgantly looping through all categories and feeding them in
+    #could probobly do this more elegantly looping through all categories and feeding them in
     daily_housing = get_transactions_by_day_by_category(request, month=month, year=year, category="Housing")
     daily_car = get_transactions_by_day_by_category(request, month=month, year=year, category="Car")
     daily_groceries = get_transactions_by_day_by_category(request, month=month, year=year, category="Groceries")
@@ -31,11 +30,12 @@ def get_transactions_by_day(request, month, year):
     daily_unassigned = get_transactions_by_day_by_category(request, month=month, year=year, category="Unassgined")
 
     colours = generate_category_colours()
+    days = get_month_days(request, month=month, year=year)
     
     #https://testdriven.io/blog/django-charts/
     return JsonResponse({
         "data": {
-            "labels": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10","11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" ],
+            "labels": days,
             "datasets": [
             {
                 "label": 'Housing',
@@ -110,6 +110,21 @@ def get_transactions_by_day_by_category(request, month, year, category):
     
     daily_res = [res.total_expenditure for res in results]
     return daily_res
+
+
+def get_month_days(request, month, year):
+    results = Transactions_by_Day.objects.raw(
+        """
+        SELECT 1 as id, t.dt::date AS monthday
+        FROM generate_series(
+            make_date(2024, 6, 1)
+            ,make_date(2024, 6, 1) + interval '1 month' - interval '1 day'
+            ,interval '1 day'
+        ) AS t(dt)
+        """
+    )
+    days = [res.monthday for res in results]
+    return days
 
 
 def dashboard(request):

@@ -86,10 +86,11 @@ const months = ["2024-06-01", "2024-06-02"]
       plugins: {
         title: {
           display: true,
-          text: 'Chart.js Bar Chart - Stacked'
+          text: 'Spending by Day'
         },
       },
-      responsive: false,
+      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         x: {
           stacked: true,
