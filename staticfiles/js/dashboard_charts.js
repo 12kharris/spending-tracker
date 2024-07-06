@@ -112,7 +112,8 @@ getChartData(year, month);
 
 //https://dmitripavlutin.com/fetch-with-json/
 async function getChartData(year, month) {
-  const response = await fetch(`${window.location.href}/${year}/${month}`, {
+  console.log(window.location.href);
+  const response = await fetch(`${window.location.href}${year}/${month}`, {
     headers: {
       'Accept': 'application/json'
     }
