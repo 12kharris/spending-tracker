@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404, reverse
 from django.views import generic
 from django.contrib import messages
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, HttpResponseNotFound
 from django.db import connection
 from django.contrib import messages
 from datetime import datetime
 from .models import Category, Transaction, Transactions_by_Day
-from .forms import TransactionForm
+from .forms import TransactionForm, DateForm
 from .charts import generate_category_colours
 
 # Create your views here.
@@ -136,6 +136,16 @@ def get_current_dashboard(request):
     return HttpResponseRedirect(reverse('get_dashboard', args=[current_year, current_month]))
 
 
+def route_to_chosen_dashboard(request):
+    if request.method == "POST":
+        date_form = DateForm(data=request.POST)
+        if date_form.is_valid():
+            year = request.POST.get("year")
+            month = request.POST.get("month")
+            return HttpResponseRedirect(reverse('get_dashboard', args=[year, month]))
+    else:
+        return HttpResponseNotFound("Page not found")
+
 
 def get_dashboard(request, year, month):
     # could have it get the current date and then redirect to dashboard/currentyear/currentmonth
@@ -164,12 +174,14 @@ def get_dashboard(request, year, month):
 
     transaction_form = TransactionForm()
 
+    years = [yr for yr in range(2023, datetime.now().year + 1)]
+
     return render(
         request,
         "tracker/dashboard.html",
         {
             "transactions": transactions.order_by("transaction_date"),
-            #"transactions_by_day": transactions_by_day,
+            "years": years,
             "transaction_form": transaction_form
         }
     )

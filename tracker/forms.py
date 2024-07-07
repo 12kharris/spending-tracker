@@ -6,3 +6,7 @@ class TransactionForm(forms.Form):
     reference = forms.CharField(max_length=30)
     category = forms.ModelChoiceField(queryset=Category.objects.all().exclude(name='Unassigned'))
     transaction_date = forms.DateField()
+
+class DateForm(forms.Form):
+    year = forms.IntegerField()
+    month = forms.IntegerField()
