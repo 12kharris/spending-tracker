@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, HttpRe
 from django.db import connection
 from django.contrib import messages
 from datetime import datetime
-from .models import Category, Transaction, Transactions_by_Day
+from .models import Category, Transaction, Transactions_by_Day, Monthly_Split
 from .forms import TransactionForm, DateForm
 from .charts import generate_category_colours
 
@@ -113,6 +113,46 @@ def get_transactions_by_day_by_category(request, month, year, category):
     return daily_res
 
 
+def get_monthly_split(request, year, month):
+    results = Monthly_Split.objects.raw(
+        """
+        SELECT 1 AS id, tot.cat_name, tot.monthly_total
+                ,CAST(tot.monthly_total * 100 
+                    / SUM(monthly_total) OVER(PARTITION BY tot.username) AS DECIMAL(19,2)
+                    ) AS pct
+        FROM (
+            SELECT 	cat.name AS cat_name
+                    ,'demo' AS username
+                    ,SUM(CASE WHEN amount IS NULL THEN 0 ELSE amount END) AS monthly_total
+            FROM tracker_category cat
+            LEFT JOIN (
+                SELECT * 
+                FROM tracker_transaction trn
+                JOIN auth_user us ON trn.user_id = us.id
+                WHERE transaction_date BETWEEN make_date(2024, 6, 1) 
+                AND make_date(2024, 6, 1) + interval '1 month' - interval '1 day'
+                AND us.username = 'demo'
+            ) trn ON cat.id = trn.category_id
+            GROUP BY cat.name
+        ) tot
+        """
+    )
+
+    colours = generate_category_colours()
+    
+    return JsonResponse({
+        "data": {
+            "labels": [res.cat_name for res in results],
+            "datasets": [
+            {
+                "label": 'dataset 1',
+                "data": [res.monthly_total for res in results],
+                "backgroundColor": [colour for colour in colours],
+            },]
+        }}
+    )
+
+
 def get_month_days(request, month, year):
     results = Transactions_by_Day.objects.raw(
         """
@@ -148,11 +188,11 @@ def route_to_chosen_dashboard(request):
 
 
 def get_dashboard(request, year, month):
-    # could have it get the current date and then redirect to dashboard/currentyear/currentmonth
-    # put the above logic in a new function called get_current_dashboard
     transactions = Transaction.objects.filter(
         user=request.user, transaction_date__year=year, transaction_date__month=month
         ).order_by("transaction_date")
+
+    get_monthly_split(request=request, year=year, month=month)
 
     if request.method == "POST":
         transaction_form = TransactionForm(data=request.POST)

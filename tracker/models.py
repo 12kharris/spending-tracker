@@ -50,3 +50,9 @@ class Transactions_by_Day(models.Model):
     username = models.CharField(max_length=150, blank=False)
     cat_name = models.CharField()
     total_expenditure = models.DecimalField(decimal_places=2, max_digits=10)
+
+
+class Monthly_Split(models.Model):
+    cat_name = models.CharField()
+    monthly_total = models.DecimalField(decimal_places=2, max_digits=10)
+    pct = models.DecimalField(decimal_places=2, max_digits=5)
