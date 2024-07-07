@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.db import connection
 from django.contrib import messages
+from datetime import datetime
 from .models import Category, Transaction, Transactions_by_Day
 from .forms import TransactionForm
 from .charts import generate_category_colours
@@ -117,18 +118,31 @@ def get_month_days(request, month, year):
         """
         SELECT 1 as id, t.dt::date AS monthday
         FROM generate_series(
-            make_date(2024, 6, 1)
-            ,make_date(2024, 6, 1) + interval '1 month' - interval '1 day'
+            make_date(%s, %s, 1)
+            ,make_date(%s, %s, 1) + interval '1 month' - interval '1 day'
             ,interval '1 day'
         ) AS t(dt)
         """
+        ,[year, month, year, month]
     )
     days = [res.monthday for res in results]
     return days
 
 
-def dashboard(request):
-    transactions = Transaction.objects.filter(user=request.user).order_by("transaction_date")
+def get_current_dashboard(request):
+    current_year = datetime.now().year
+    current_month = datetime.now().month
+    
+    return HttpResponseRedirect(reverse('get_dashboard', args=[current_year, current_month]))
+
+
+
+def get_dashboard(request, year, month):
+    # could have it get the current date and then redirect to dashboard/currentyear/currentmonth
+    # put the above logic in a new function called get_current_dashboard
+    transactions = Transaction.objects.filter(
+        user=request.user, transaction_date__year=year, transaction_date__month=month
+        ).order_by("transaction_date")
 
     if request.method == "POST":
         transaction_form = TransactionForm(data=request.POST)

@@ -1,10 +1,12 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
-Welcome Kurt Harris,
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+Things to include
+- mockups and diagrams from planning
+- problems that were encountered and how they were fixed
 
-You can safely delete this README.md file or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **June 14, 2024**
+Problems encountered
+- There was an issue with setting up the db view for daily spending. The view required a change so the migration was rolled back. However, when running the migration again, django did not run the migration to recreate the view as it thought it was already implemented. Checking the migrations table in the db it believed the migration had been run but the view did not exist. After deleting the migration from the db table and re-running the migrations it errored saying that the object it was trying to create (the view) already existed, despite it not existing on the db. To resolve this, I abandoned that model and made a new view with the same logic but a different name.
+- The next view issue encountered was where using django's ORM to query the model which the view was the db_table for never returned any objects. There was data in the view in the db but for whatever reason, no data was ever returned. As a result, I created a second model not attached to any db table where I could run raw SQL statements and this returned the data in the view.
 
 ## Gitpod Reminders
 
