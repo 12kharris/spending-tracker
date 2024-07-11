@@ -51,8 +51,30 @@ class Transactions_by_Day(models.Model):
     cat_name = models.CharField()
     total_expenditure = models.DecimalField(decimal_places=2, max_digits=10)
 
+    # class Meta:
+    #     managed = False
+
 
 class Monthly_Split(models.Model):
     cat_name = models.CharField()
     monthly_total = models.DecimalField(decimal_places=2, max_digits=10)
     pct = models.DecimalField(decimal_places=2, max_digits=5)
+
+    # class Meta:
+    #     managed = False
+
+
+class Yearly_Split(models.Model):
+    cat_name = models.CharField()
+    yearly_total = models.DecimalField(decimal_places=2, max_digits=10)
+
+    # class Meta:
+    #     managed = False
+
+
+class Monthly_Totals(models.Model):
+    month = models.IntegerField()
+    total_expenditure = models.DecimalField(decimal_places=2, max_digits=10)
+
+    # class Meta:
+    #     managed = False

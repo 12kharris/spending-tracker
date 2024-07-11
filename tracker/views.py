@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, HttpRe
 from django.db import connection
 from django.contrib import messages
 from datetime import datetime
-from .models import Category, Transaction, Transactions_by_Day, Monthly_Split
+from .models import Category, Transaction, Transactions_by_Day, Monthly_Split, Yearly_Split, Monthly_Totals
 from .forms import TransactionForm, DateForm
 from .charts import generate_category_colours
 
@@ -184,12 +184,12 @@ def route_to_chosen_dashboard(request):
         if date_form.is_valid():
             year = request.POST.get("year")
             month = request.POST.get("month")
-            return HttpResponseRedirect(reverse('get_dashboard', args=[year, month]))
+            return HttpResponseRedirect(reverse('get_month_dashboard', args=[year, month]))
     else:
         return HttpResponseNotFound("Page not found")
 
 
-def get_dashboard(request, year, month):
+def get_month_dashboard(request, year, month):
     transactions = Transaction.objects.filter(
         user=request.user, transaction_date__year=year, transaction_date__month=month
         ).order_by("transaction_date")
@@ -220,7 +220,7 @@ def get_dashboard(request, year, month):
 
     return render(
         request,
-        "tracker/dashboard.html",
+        "tracker/dashboard-month.html",
         {
             "transactions": transactions.order_by("transaction_date"),
             "years": years,
@@ -259,3 +259,69 @@ def transaction_delete(request, transaction_id):
         messages.add_message(request, messages.ERROR, "Error deleting transaction")
 
     return HttpResponseRedirect(reverse('dashboard'))
+
+def get_year_dashboard(request, year):
+    years = [yr for yr in range(2023, datetime.now().year + 1)]
+
+    return render(
+        request,
+        "tracker/dashboard-year.html",
+        {
+            "years": years,
+        }
+    )
+
+
+def get_yearly_split(request, year):
+    results = Yearly_Split.objects.raw(
+        """
+        SELECT 1 AS id, cat_name, SUM(total_expenditure) AS yearly_total
+        FROM daily_transactions trn
+        WHERE username = %s AND yr = %s
+        GROUP BY cat_name
+        ORDER BY cat_name
+        """
+        ,[request.user.username, year]
+    )
+
+    colours = generate_category_colours()
+
+    return JsonResponse({
+        "data": {
+            "labels": [res.cat_name for res in results],
+            "datasets": [
+            {
+                "label": 'dataset 1',
+                "data": [res.yearly_total for res in results],
+                "backgroundColor": [colours[colour] for colour in colours],
+            },]
+        }}
+    )
+
+
+def get_year_by_month(request, year):
+    results = Monthly_Totals.objects.raw(
+        """
+        SELECT 1 AS id, mnth AS month, SUM(total_expenditure) AS total_expenditure
+        FROM daily_transactions trn
+        WHERE username = %s AND yr = %s
+        GROUP BY mnth
+        ORDER BY mnth
+        """
+        ,[request.user.username, year]
+    )
+    
+    return JsonResponse({
+        "labels": [res.month for res in results],
+        "datasets": [
+            {
+                "label": 'Dataset 1',
+                "data": [res.total_expenditure for res in results],
+                "borderColor": "#fc0303",
+                "backgroundColor": "#fc0303",
+            },
+        ]
+    })
+    
+   
+

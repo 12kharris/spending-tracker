@@ -1,3 +1,5 @@
+const daily_chart = document.getElementById("daily-chart");
+const monthly_pie = document.getElementById("monthly-pie")
 
 loadStackedBar();
 loadMonthPie();
@@ -5,8 +7,6 @@ loadMonthPie();
 
 //https://dmitripavlutin.com/fetch-with-json/
 async function loadStackedBar() {
-  const daily_chart = document.getElementById("daily-chart");
-
   const config = {
     type: 'bar',
     options: {
@@ -53,19 +53,6 @@ async function loadStackedBar() {
 }
 
 async function loadMonthPie() {
-  const monthly_pie = document.getElementById("monthly-pie")
-  // const data = {
-  //   labels: ['data 1', 'data 2', 'data 3', 'data 4', 'data 5'],
-  //   datasets: [
-  //     {
-  //       label: 'Dataset 1',
-  //       data: [10, 20, 15, 30, 25],
-  //       backgroundColor: ["#fc0303", "#1703fc", "#a903fc", "#03c6fc", "#d3f54c"],
-  //     }
-  //   ]
-  // };
-
-
   const config = {
     type: 'pie',
     options: {
@@ -103,3 +90,20 @@ async function loadMonthPie() {
 
   pie.update()
 }
+
+const config = {
+  type: 'line',
+  data: data,
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Line Chart'
+      }
+    }
+  },
+};
