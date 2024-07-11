@@ -28,6 +28,7 @@ populateMonth();
 
 function getValidMonths() {
     month_selector.innerHTML = "";
+    month_selector.innerHTML += "<option>All</option>";
     if (year_selector.value == current_year) {
         for (let i = 1; i <= current_month; i++) {
             month_selector.innerHTML += `<option>${i}</option>`;
@@ -44,7 +45,7 @@ function populateMonth() {
     let month_element;
     let month_options = month_selector.getElementsByTagName("option");
     if (selected_month === "") {
-        month_element = month_options[month_options.length - 1];
+        month_element = month_options[0];
     }
 
     for(let option of month_options) {

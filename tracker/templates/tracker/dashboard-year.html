@@ -8,25 +8,9 @@
 
 <div class="row">
     <div class="col-2">
-        <p>Yearly Breakdown</p>
+        <p>Yearly Breakdown - {{chosen_year}}</p>
     </div>
-    <div class="col-4" style="display: inline-block;">
-        <form id="year-form" class="form-inline" action="{% url 'route_to_year_dashboard' %}" method="POST">
-            <div class="form-group">
-                <select class="year-selector" name="year">
-                    {% for year in years %}
-                    <option>{{year}}</option>
-                    {% endfor %}
-                </select>
-                {% csrf_token %}
-                <button type="submit" id="year-submit">GO</button>
-            </div>
-        </form>
-    </div>
-    <div class="col-2" style="text-align: right;">
-        <p>Monthly Breakdown</p>
-    </div>
-    <div class="col-4">
+    <div class="col-10">
         <div class="text-end">
             <form class="form-inline" action="{% url 'route_to_dashboard' %}" method="POST">
                 <div class="form-group">

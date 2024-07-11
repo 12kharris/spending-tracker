@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, HttpResponseNotFound
 from django.db import connection
 from django.contrib import messages
-from datetime import datetime
+from datetime import datetime, date
 from .models import Category, Transaction, Transactions_by_Day, Monthly_Split, Yearly_Split, Monthly_Totals
 from .forms import TransactionForm, DateForm, YearForm
 from .charts import generate_category_colours
@@ -175,7 +175,7 @@ def get_current_dashboard(request):
     current_year = datetime.now().year
     current_month = datetime.now().month
     
-    return HttpResponseRedirect(reverse('get_dashboard', args=[current_year, current_month]))
+    return HttpResponseRedirect(reverse('get_month_dashboard', args=[current_year, current_month]))
 
 
 def route_to_chosen_dashboard(request):
@@ -184,7 +184,11 @@ def route_to_chosen_dashboard(request):
         if date_form.is_valid():
             year = request.POST.get("year")
             month = request.POST.get("month")
-            return HttpResponseRedirect(reverse('get_month_dashboard', args=[year, month]))
+
+            if month == "All":
+                return HttpResponseRedirect(reverse('get_year_dashboard', args=[year]))
+            else:
+                return HttpResponseRedirect(reverse('get_month_dashboard', args=[year, month]))
     else:
         return HttpResponseNotFound("Page not found")
 
@@ -227,6 +231,7 @@ def get_month_dashboard(request, year, month):
     transaction_form = TransactionForm()
 
     years = [yr for yr in range(2023, datetime.now().year + 1)]
+    month_name = date(year, month, 1).strftime('%B')
 
     return render(
         request,
@@ -234,7 +239,9 @@ def get_month_dashboard(request, year, month):
         {
             "transactions": transactions.order_by("transaction_date"),
             "years": years,
-            "transaction_form": transaction_form
+            "transaction_form": transaction_form,
+            "chosen_month_name": month_name,
+            "chosen_year": year
         }
     )
 
@@ -270,14 +277,16 @@ def transaction_delete(request, transaction_id):
 
     return HttpResponseRedirect(reverse('dashboard'))
 
+
 def get_year_dashboard(request, year):
     years = [yr for yr in range(2023, datetime.now().year + 1)]
-
+    print(year)
     return render(
         request,
         "tracker/dashboard-year.html",
         {
             "years": years,
+            "chosen_year": year
         }
     )
 

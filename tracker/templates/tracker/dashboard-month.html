@@ -7,20 +7,10 @@
 {% url 'route_to_dashboard' as route %}
 
 <div class="row">
-    <div class="col-8">
-        <form class="form-inline" action="{% url 'route_to_year_dashboard' %}" method="POST">
-            <div class="form-group">
-                <select class="year-selector" name="year">
-                    {% for year in years %}
-                    <option>{{year}}</option>
-                    {% endfor %}
-                </select>
-                {% csrf_token %}
-                <button type="submit" id="year-submit">GO</button>
-            </div>
-        </form>
-    </div>
     <div class="col-4">
+        <p>Monthly Breakdown - {{chosen_month_name}} {{chosen_year}}</p>
+    </div>
+    <div class="col-8">
         <div class="text-end">
             <form class="form-inline" action="{% url 'route_to_dashboard' %}" method="POST">
                 <div class="form-group">
@@ -51,37 +41,42 @@
     </div>
 </div>
 
+<hr>
 
-<div>
-    <form id="form-transaction" method="post">
-        {{ transaction_form | crispy }}
-        {% csrf_token %}
-        <button type="submit" id="btn-submit">Add Transaction</button>
-    </form>
+<div class="row">
+    <div class="col-6">
+        <form id="form-transaction" method="post">
+            {{ transaction_form | crispy }}
+            {% csrf_token %}
+            <button type="submit" id="btn-submit">Add Transaction</button>
+        </form>
+    </div>
+
+    <div class="col-6">
+        <table>
+            <tr id="table-headers">
+                <th>Amount</th>
+                <th>Reference</th>
+                <th>Category</th>
+                <th>Transaction Date</th>
+            </tr>
+            {% for transaction in transactions %}
+            <tr id = "row-{{transaction.id}}">
+                <td id="amount-{{transaction.id}}" class="amount">{{transaction.amount}}</td>
+                <td id="reference{{transaction.id}}" class="reference">{{transaction.reference}}</td>
+                <td id="category-{{transaction.id}}" class="category">{{transaction.category.name}}</td>
+                <td id="transaction_date-{{transaction.id}}" class="date">{{transaction.transaction_date}}</td>
+                <td>
+                    <button class="btn-edit-transaction" transaction_id = "{{transaction.id}}">Edit</button>
+                </td>
+                <td>
+                    <a class="btn-delete-transaction" transaction_id = "{{transaction.id}}" href="transaction_delete/{{transaction.id}}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </div>
-
-<table>
-    <tr id="table-headers">
-        <th>Amount</th>
-        <th>Reference</th>
-        <th>Category</th>
-        <th>Transaction Date</th>
-    </tr>
-    {% for transaction in transactions %}
-    <tr id = "row-{{transaction.id}}">
-        <td id="amount-{{transaction.id}}" class="amount">{{transaction.amount}}</td>
-        <td id="reference{{transaction.id}}" class="reference">{{transaction.reference}}</td>
-        <td id="category-{{transaction.id}}" class="category">{{transaction.category.name}}</td>
-        <td id="transaction_date-{{transaction.id}}" class="date">{{transaction.transaction_date}}</td>
-        <td>
-            <button class="btn-edit-transaction" transaction_id = "{{transaction.id}}">Edit</button>
-        </td>
-        <td>
-            <a class="btn-delete-transaction" transaction_id = "{{transaction.id}}" href="transaction_delete/{{transaction.id}}">Delete</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
 
 {% endblock content %}
 
