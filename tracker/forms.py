@@ -10,3 +10,7 @@ class TransactionForm(forms.Form):
 class DateForm(forms.Form):
     year = forms.IntegerField()
     month = forms.IntegerField()
+
+
+class YearForm(forms.Form):
+    year = forms.IntegerField()

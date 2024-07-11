@@ -7,26 +7,38 @@
 {% url 'route_to_dashboard' as route %}
 
 <div class="row">
-    <div class="col-2">
-        <p>Dashboard</p>
-    </div>
-    <div class="col-10 text-end">
-        <form class="form-inline" action="{% url 'route_to_dashboard' %}" method="POST">
+    <div class="col-8">
+        <form class="form-inline" action="{% url 'route_to_year_dashboard' %}" method="POST">
             <div class="form-group">
-                <label for="year-selector">Year</label>
-                <select id="year-selector" name="year">
+                <select class="year-selector" name="year">
                     {% for year in years %}
                     <option>{{year}}</option>
                     {% endfor %}
                 </select>
-
-                <label for="month-selector">Month</label>
-                <select id="month-selector" name="month">                   
-                </select>
                 {% csrf_token %}
-                <button type="submit" id="date-submit">GO</button> 
-            </div>  
+                <button type="submit" id="year-submit">GO</button>
+            </div>
         </form>
+    </div>
+    <div class="col-4">
+        <div class="text-end">
+            <form class="form-inline" action="{% url 'route_to_dashboard' %}" method="POST">
+                <div class="form-group">
+                    <label for="year-selector">Year</label>
+                    <select class="year-selector" id="year-selector" name="year">
+                        {% for year in years %}
+                        <option>{{year}}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="month-selector">Month</label>
+                    <select id="month-selector" name="month">
+                    </select>
+                    {% csrf_token %}
+                    <button type="submit" id="date-submit">GO</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

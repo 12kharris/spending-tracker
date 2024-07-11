@@ -5,6 +5,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("dashboard/", views.get_current_dashboard, name="dashboard"),
     path("dashboard/get", views.route_to_chosen_dashboard, name="route_to_dashboard"),
+    path("dashboard/getyear", views.route_to_chosen_year_dashboard, name="route_to_year_dashboard"),
     path("dashboard/<int:year>/", views.get_year_dashboard, name="get_year_dashboard"),
     path("dashboard/<int:year>/raw", views.get_year_by_month, name="get_year_by_month"),
     path("dashboard/<int:year>/split", views.get_yearly_split, name="get_yearly_split"),

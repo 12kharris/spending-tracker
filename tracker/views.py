@@ -6,7 +6,7 @@ from django.db import connection
 from django.contrib import messages
 from datetime import datetime
 from .models import Category, Transaction, Transactions_by_Day, Monthly_Split, Yearly_Split, Monthly_Totals
-from .forms import TransactionForm, DateForm
+from .forms import TransactionForm, DateForm, YearForm
 from .charts import generate_category_colours
 
 # Create your views here.
@@ -189,6 +189,16 @@ def route_to_chosen_dashboard(request):
         return HttpResponseNotFound("Page not found")
 
 
+def route_to_chosen_year_dashboard(request):
+    if request.method == "POST":
+        year_form = YearForm(data=request.POST)
+        if year_form.is_valid():
+            year = request.POST.get("year")
+            return HttpResponseRedirect(reverse('get_year_dashboard', args=[year]))
+    else:
+        return HttpResponseNotFound("Page not found")
+
+
 def get_month_dashboard(request, year, month):
     transactions = Transaction.objects.filter(
         user=request.user, transaction_date__year=year, transaction_date__month=month
@@ -312,15 +322,17 @@ def get_year_by_month(request, year):
     )
     
     return JsonResponse({
-        "labels": [res.month for res in results],
-        "datasets": [
-            {
-                "label": 'Dataset 1',
-                "data": [res.total_expenditure for res in results],
-                "borderColor": "#fc0303",
-                "backgroundColor": "#fc0303",
-            },
-        ]
+        "data": {
+            "labels": [res.month for res in results],
+            "datasets": [
+                {
+                    "label": 'Dataset 1',
+                    "data": [res.total_expenditure for res in results],
+                    "borderColor": "#fc0303",
+                    "backgroundColor": "#fc0303",
+                },
+            ]
+        }
     })
     
    
