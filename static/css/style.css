@@ -1,0 +1,16 @@
+
+
+
+
+/* Dashboard-Month Styles */
+#form-collapse {
+    text-align: center;
+}
+
+#form-container {
+    width: 90%;
+} 
+
+#form-transaction div label {
+    display: block;
+}

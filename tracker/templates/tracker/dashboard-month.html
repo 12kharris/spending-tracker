@@ -6,11 +6,15 @@
 
 {% url 'route_to_dashboard' as route %}
 
+
 <div class="row">
     <div class="col-4">
         <p>Monthly Breakdown - {{chosen_month_name}} {{chosen_year}}</p>
     </div>
-    <div class="col-8">
+    <div class="col-4" style="text-align: center;">
+        <p>Total Expenditure - {{total_exp}}</p>
+    </div>
+    <div class="col-4">
         <div class="text-end">
             <form class="form-inline" action="{% url 'route_to_dashboard' %}" method="POST">
                 <div class="form-group">
@@ -42,41 +46,80 @@
 </div>
 
 <hr>
-
-<div class="row">
-    <div class="col-6">
-        <form id="form-transaction" method="post">
-            {{ transaction_form | crispy }}
-            {% csrf_token %}
-            <button type="submit" id="btn-submit">Add Transaction</button>
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#form-collapse" aria-expanded="false" aria-controls="collapseAddExpenditureForm">
+    Add an Expenditure
+</button>
+<div class="row justify-content-center collapse" id="form-collapse">
+    <div class="col-12" id="form-container">
+        <form class="row align-items-center" id="form-transaction" method="POST">
+            <div class="col-1"></div>
+            <div class="col-2 text-center">
+                <label for="form-amount">Amount</label>
+                <input type="number" step="0.01" value="0.01" id="form-amount" name="amount" required>
+            </div>
+            <div class="col-2">
+                <label for="form-ref">Reference</label>
+                <input type="text" maxlength="30" id="form-ref" name="reference" required>
+            </div>
+            <div class="col-2">
+                <label for="form-category">Category</label>
+                <select id="form-category" name="category" required>
+                    <option>Car</option>
+                    <option>Groceries</option>
+                    <option>Dining Out</option>
+                    <option>Subscriptions</option>
+                    <option>Clothes</option>
+                    <option>Leisure</option>
+                    <option>Housing</option>
+                    <option>Education</option>
+                    <option>Presents</option>
+                    <option>Miscellaneous</option>
+                    <option>Unassigned</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <label for="form-date">Date</label>
+                <input type="date" id="form-date" name="transaction_date" required>
+                {% csrf_token %}
+            </div>
+            <div class="col-2">
+                <button type="submit" id="btn-submit">Add Transaction</button>
+            </div>
+            <div class="col-1"></div>
         </form>
     </div>
-
-    <div class="col-6">
-        <table>
-            <tr id="table-headers">
-                <th>Amount</th>
-                <th>Reference</th>
-                <th>Category</th>
-                <th>Transaction Date</th>
-            </tr>
-            {% for transaction in transactions %}
-            <tr id = "row-{{transaction.id}}">
-                <td id="amount-{{transaction.id}}" class="amount">{{transaction.amount}}</td>
-                <td id="reference{{transaction.id}}" class="reference">{{transaction.reference}}</td>
-                <td id="category-{{transaction.id}}" class="category">{{transaction.category.name}}</td>
-                <td id="transaction_date-{{transaction.id}}" class="date">{{transaction.transaction_date}}</td>
-                <td>
-                    <button class="btn-edit-transaction" transaction_id = "{{transaction.id}}">Edit</button>
-                </td>
-                <td>
-                    <a class="btn-delete-transaction" transaction_id = "{{transaction.id}}" href="transaction_delete/{{transaction.id}}">Delete</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
 </div>
+
+
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#all-expenditures" aria-expanded="false" aria-controls="collapseExpenditures">
+    See all Expenditures
+</button>
+<div class="collapse" id="all-expenditures">
+    <table>
+        <tr id="table-headers">
+            <th>Amount</th>
+            <th>Reference</th>
+            <th>Category</th>
+            <th>Transaction Date</th>
+        </tr>
+        {% for transaction in transactions %}
+        <tr id="row-{{transaction.id}}">
+            <td id="amount-{{transaction.id}}" class="amount">{{transaction.amount}}</td>
+            <td id="reference{{transaction.id}}" class="reference">{{transaction.reference}}</td>
+            <td id="category-{{transaction.id}}" class="category">{{transaction.category.name}}</td>
+            <td id="transaction_date-{{transaction.id}}" class="date">{{transaction.transaction_date}}</td>
+            <td>
+                <button class="btn-edit-transaction" transaction_id="{{transaction.id}}">Edit</button>
+            </td>
+            <td>
+                <a class="btn-delete-transaction" transaction_id="{{transaction.id}}"
+                    href="transaction_delete/{{transaction.id}}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
 
 {% endblock content %}
 

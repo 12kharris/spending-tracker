@@ -50,8 +50,6 @@ async function loadStackedBar(chart_element, heading) {
   });
   const data = await response.json();
   const labels = data.data.labels;
-  console.log(data.data.labels);
-  console.log(data.data.datasets);
   const datasets = data.data.datasets;
 
   stackedBar.data.datasets = [];

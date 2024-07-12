@@ -208,18 +208,28 @@ def get_month_dashboard(request, year, month):
         user=request.user, transaction_date__year=year, transaction_date__month=month
         ).order_by("transaction_date")
 
-    get_monthly_split(request=request, year=year, month=month)
+    total_expenditure = 0
+    for trn in transactions:
+        total_expenditure += trn.amount
 
     if request.method == "POST":
+        post = request.POST.copy()
+        post["amount"] = round(float(request.POST.get("amount")),2)
+        request.POST = post
+
         transaction_form = TransactionForm(data=request.POST)
+
         if(transaction_form.is_valid()):
             #https://stackoverflow.com/questions/16443029/cant-save-a-form-in-django-object-has-no-attribute-save
             cd = transaction_form.cleaned_data
+
+            category = Category.objects.filter(name=cd['category'])
+
             transaction = Transaction(
                 amount = cd['amount'], 
                 reference= cd['reference'],
                 user = request.user,
-                category = cd['category'],
+                category = category[0],
                 transaction_date = cd['transaction_date']
             )
             transaction.save()
@@ -238,6 +248,7 @@ def get_month_dashboard(request, year, month):
         "tracker/dashboard-month.html",
         {
             "transactions": transactions.order_by("transaction_date"),
+            "total_exp": total_expenditure,
             "years": years,
             "transaction_form": transaction_form,
             "chosen_month_name": month_name,

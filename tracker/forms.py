@@ -5,7 +5,7 @@ from django import forms
 class TransactionForm(forms.Form):
     amount = forms.DecimalField(max_digits=10,decimal_places=2)
     reference = forms.CharField(max_length=30)
-    category = forms.ModelChoiceField(queryset=Category.objects.all().exclude(name='Unassigned'))
+    category = forms.CharField()
     transaction_date = forms.DateField(
         widget=forms.TextInput(     
             attrs={'type': 'date'} 
