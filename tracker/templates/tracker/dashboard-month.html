@@ -6,32 +6,35 @@
 
 {% url 'route_to_dashboard' as route %}
 
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="row top-ribbon justify-content-center">
+            <div class="col-4 d-flex align-items-center">
+                <p class="ribbon-head">Monthly Breakdown - <span class="ribbon-bold">{{chosen_month_name}} {{chosen_year}}</span></p>
+            </div>
+            <div class="col-4 d-flex align-items-center ribbon-center" style="text-align: center;">
+                <p class="ribbon-head total">Total Expenditure - <span class="ribbon-bold">{{total_exp}}</span></p>
+            </div>
+            <div class="col-4">
+                <div class="text-end">
+                    <form class="form-inline" action="{% url 'route_to_dashboard' %}" method="POST">
+                        <div class="form-group">
+                            <label for="year-selector">Year</label>
+                            <select class="year-selector" id="year-selector" name="year">
+                                {% for year in years %}
+                                <option>{{year}}</option>
+                                {% endfor %}
+                            </select>
 
-<div class="row top-ribbon">
-    <div class="col-4 d-flex align-items-center">
-        <p class="ribbon-head">Monthly Breakdown - {{chosen_month_name}} {{chosen_year}}</p>
-    </div>
-    <div class="col-4 d-flex align-items-center ribbon-center" style="text-align: center;">
-        <p class="ribbon-head total">Total Expenditure - {{total_exp}}</p>
-    </div>
-    <div class="col-4">
-        <div class="text-end">
-            <form class="form-inline" action="{% url 'route_to_dashboard' %}" method="POST">
-                <div class="form-group">
-                    <label for="year-selector">Year</label>
-                    <select class="year-selector" id="year-selector" name="year">
-                        {% for year in years %}
-                        <option>{{year}}</option>
-                        {% endfor %}
-                    </select>
-
-                    <label for="month-selector">Month</label>
-                    <select id="month-selector" name="month">
-                    </select>
-                    {% csrf_token %}
-                    <button type="submit" id="date-submit">GO</button>
+                            <label for="month-selector">Month</label>
+                            <select id="month-selector" name="month">
+                            </select>
+                            {% csrf_token %}
+                            <button type="submit" id="date-submit">GO</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -91,34 +94,41 @@
         </div>
     </div>
 
+    <hr>
 
     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#all-expenditures" aria-expanded="false" aria-controls="collapseExpenditures">
         See all Expenditures
     </button>
     <div class="collapse" id="all-expenditures">
-        <table class="table">
-            <tr id="table-headers">
-                <th>Amount</th>
-                <th>Reference</th>
-                <th>Category</th>
-                <th>Transaction Date</th>
-            </tr>
-            {% for transaction in transactions %}
-            <tr id="row-{{transaction.id}}">
-                <td id="amount-{{transaction.id}}" class="amount">{{transaction.amount}}</td>
-                <td id="reference{{transaction.id}}" class="reference">{{transaction.reference}}</td>
-                <td id="category-{{transaction.id}}" class="category">{{transaction.category.name}}</td>
-                <td id="transaction_date-{{transaction.id}}" class="date">{{transaction.transaction_date}}</td>
-                <td>
-                    <button class="btn-edit-transaction" transaction_id="{{transaction.id}}">Edit</button>
-                </td>
-                <td>
-                    <a class="btn-delete-transaction" transaction_id="{{transaction.id}}"
-                        href="transaction_delete/{{transaction.id}}">Delete</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+        <div class="row justify-content-center">
+            <div class="col-12" id="table-holder">
+                <table class="table table-sm table-hover">
+                    <tr id="table-headers" class="table-active">
+                        <th>Amount</th>
+                        <th>Reference</th>
+                        <th>Category</th>
+                        <th>Transaction Date</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {% for transaction in transactions %}
+                    <tr id="row-{{transaction.id}}">
+                        <td id="amount-{{transaction.id}}" class="amount"><b>{{transaction.amount}}</b></td>
+                        <td id="reference{{transaction.id}}" class="reference">{{transaction.reference}}</td>
+                        <td class="category-{{transaction.category.name}}" id="category-{{transaction.id}}" class="category">{{transaction.category.name}}</td>
+                        <td id="transaction_date-{{transaction.id}}" class="date">{{transaction.transaction_date}}</td>
+                        <td>
+                            <button class="btn-edit-transaction" transaction_id="{{transaction.id}}">Edit</button>
+                        </td>
+                        <td>
+                            <a class="btn-delete-transaction" transaction_id="{{transaction.id}}"
+                                href="transaction_delete/{{transaction.id}}">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
