@@ -1,16 +1,74 @@
 
+/* Base styles */
+nav {
+    font-size: 20px;
+}
 
+.bg-darkgreen {
+    background-color: #004225;
+}
 
+.nav-link {
+    color: #fafafa;
+}
+
+.nav-element {
+    padding-left: 40px;
+}
+
+.active {
+    text-decoration: underline;
+}
 
 /* Dashboard-Month Styles */
+.top-ribbon {
+    background-color: rgba(219, 219, 219, 0.7);
+    font-size: 20px;
+    font-weight: 500;
+    padding: 15px 30px 15px 30px;
+}
+
+.ribbon-head {
+    margin-bottom: 0;
+}
+
+.ribbon-center {
+    text-align: center;
+}
+
+.total {
+    text-align: center;
+    width: 100%;
+}
+
+.content {
+    padding-left: 30px;
+    padding-right: 30px;
+    background-color: #fafafa;
+}
+
 #form-collapse {
     text-align: center;
 }
 
 #form-container {
-    width: 90%;
+    width: 100%;
 } 
 
 #form-transaction div label {
     display: block;
+}
+
+#form-transaction div input {
+    width: 100%;
+}
+
+#btn-submit {
+    background-color: green;
+    color: white;
+}
+
+#btn-cancel {
+    background-color: red;
+    color: white;
 }

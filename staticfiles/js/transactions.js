@@ -1,13 +1,13 @@
 const edit_buttons = document.getElementsByClassName("btn-edit-transaction");
 const delete_buttons = document.getElementsByClassName("btn-delete-transaction");
 const submit_button = document.getElementById("btn-submit");
+const cancel_button = document.getElementById("btn-cancel");
 const transaction_form = document.getElementById("form-transaction");
 const transaction_form_amount = document.getElementById("form-amount");
 const transaction_form_reference = document.getElementById("form-ref");
 const transaction_form_category = document.getElementById("form-category");
 const transaction_form_date = document.getElementById("form-date");
 const transaction_category_options = transaction_form_category.getElementsByTagName("option");
-
 
 /**
  * Add event listeners which populate the transaction form with data from the selected transaction
@@ -43,6 +43,16 @@ for(let button of edit_buttons) {
 
         transaction_form.setAttribute("Action", `transaction_edit/${transaction_id}`)
         submit_button.innerText = "Update";
+        transaction_form_category.focus();
     })
 }
 
+cancel_button.addEventListener("click", (e) => {
+    transaction_form_amount.value = 0.01;
+    transaction_form_category.value = 1;
+    transaction_form_reference.value = "";
+    transaction_form_date.value = "dd/mm/yyyy";
+
+    transaction_form.removeAttribute("Action");
+    submit_button.innerText = "Add Expenditure";
+})
