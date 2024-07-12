@@ -257,27 +257,34 @@ def get_month_dashboard(request, year, month):
     )
 
 
-def transaction_edit(request, transaction_id):
+def transaction_edit(request, year, month, transaction_id):
     if request.method == "POST":
+        post = request.POST.copy()
+        post["amount"] = round(float(request.POST.get("amount")),2)
+        request.POST = post
+
         queryset = Transaction.objects.filter(user=request.user, id=transaction_id)
         transaction = get_object_or_404(queryset, id=transaction_id)
         transaction_form = TransactionForm(data=request.POST)
 
         if transaction_form.is_valid() and transaction.user == request.user:
             cd = transaction_form.cleaned_data
+            category = Category.objects.filter(name=cd['category'])
+
             transaction.amount = cd['amount']
             transaction.reference = cd['reference']
-            transaction.category = cd['category']
+            transaction.category = category[0]
             transaction.transaction_date = cd['transaction_date']
             transaction.save()
+
             messages.add_message(request, messages.SUCCESS, 'Transaction Updated!')
         else:
             messages.add_message(request, messages.ERROR, 'Error updating transaction!')
 
-    return HttpResponseRedirect(reverse('dashboard'))
+    return HttpResponseRedirect(reverse('get_month_dashboard', args=[year, month]))
 
 
-def transaction_delete(request, transaction_id):
+def transaction_delete(request, year, month, transaction_id):
     transaction = get_object_or_404(Transaction.objects.filter(user=request.user, id = transaction_id), id = transaction_id)
 
     if transaction.user == request.user:
@@ -286,7 +293,7 @@ def transaction_delete(request, transaction_id):
     else:
         messages.add_message(request, messages.ERROR, "Error deleting transaction")
 
-    return HttpResponseRedirect(reverse('dashboard'))
+    return HttpResponseRedirect(reverse('get_month_dashboard', args=[year, month]))
 
 
 def get_year_dashboard(request, year):

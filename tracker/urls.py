@@ -12,6 +12,6 @@ urlpatterns = [
     path("dashboard/<int:year>/<int:month>/", views.get_month_dashboard, name="get_month_dashboard"),
     path("dashboard/<int:year>/<int:month>/raw", views.get_transactions_by_day, name="get_transactions_by_day"),
     path("dashboard/<int:year>/<int:month>/split", views.get_monthly_split, name="get_monthly_split"),
-    path('dashboard/transaction_edit/<int:transaction_id>',views.transaction_edit, name='transaction_edit'),
-    path('dashboard/transaction_delete/<int:transaction_id>',views.transaction_delete, name='transaction_delete'),
+    path('dashboard/<int:year>/<int:month>/transaction_edit/<int:transaction_id>',views.transaction_edit, name='transaction_edit'),
+    path('dashboard/<int:year>/<int:month>/transaction_delete/<int:transaction_id>',views.transaction_delete, name='transaction_delete'),
 ]
