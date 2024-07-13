@@ -17,6 +17,9 @@ def home(request):
     )
 
 def get_transactions_by_day(request, month, year):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("home"))
+    
     #could probobly do this more elegantly looping through all categories and feeding them in
     daily_housing = get_transactions_by_day_by_category(request, month=month, year=year, category="Housing")
     daily_car = get_transactions_by_day_by_category(request, month=month, year=year, category="Car")
@@ -99,6 +102,9 @@ def get_transactions_by_day(request, month, year):
 
 
 def get_transactions_by_day_by_category(request, month, year, category):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("home"))
+    
     results = Transactions_by_Day.objects.raw(
         """
         SELECT 1 AS id, * 
@@ -114,6 +120,9 @@ def get_transactions_by_day_by_category(request, month, year, category):
 
 
 def get_monthly_split(request, year, month):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("home"))
+    
     results = Monthly_Split.objects.raw(
         """
         SELECT 1 AS id, tot.cat_name, tot.monthly_total
@@ -156,6 +165,9 @@ def get_monthly_split(request, year, month):
 
 
 def get_month_days(request, month, year):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("home"))
+
     results = Transactions_by_Day.objects.raw(
         """
         SELECT 1 as id, t.dt::date AS monthday
@@ -204,6 +216,9 @@ def route_to_chosen_year_dashboard(request):
 
 
 def get_month_dashboard(request, year, month):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("home"))
+
     transactions = Transaction.objects.filter(
         user=request.user, transaction_date__year=year, transaction_date__month=month
         ).order_by("transaction_date")
@@ -258,6 +273,9 @@ def get_month_dashboard(request, year, month):
 
 
 def transaction_edit(request, year, month, transaction_id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("home"))
+    
     if request.method == "POST":
         post = request.POST.copy()
         post["amount"] = round(float(request.POST.get("amount")),2)
@@ -285,6 +303,9 @@ def transaction_edit(request, year, month, transaction_id):
 
 
 def transaction_delete(request, year, month, transaction_id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("home"))
+    
     transaction = get_object_or_404(Transaction.objects.filter(user=request.user, id = transaction_id), id = transaction_id)
 
     if transaction.user == request.user:
@@ -297,19 +318,34 @@ def transaction_delete(request, year, month, transaction_id):
 
 
 def get_year_dashboard(request, year):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("home"))
+
+    transactions = Transaction.objects.filter(
+        user=request.user, transaction_date__year=year
+    )
+
+    total_expenditure = 0
+    for trn in transactions:
+        total_expenditure += trn.amount
+
     years = [yr for yr in range(2023, datetime.now().year + 1)]
-    print(year)
+
     return render(
         request,
         "tracker/dashboard-year.html",
         {
             "years": years,
-            "chosen_year": year
+            "chosen_year": year,
+            "total_exp": total_expenditure
         }
     )
 
 
 def get_yearly_split(request, year):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("home"))
+
     results = Yearly_Split.objects.raw(
         """
         SELECT 1 AS id, cat_name, SUM(total_expenditure) AS yearly_total
@@ -337,6 +373,9 @@ def get_yearly_split(request, year):
 
 
 def get_year_by_month(request, year):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("home"))
+    
     results = Monthly_Totals.objects.raw(
         """
         SELECT 1 AS id, mnth AS month, SUM(total_expenditure) AS total_expenditure

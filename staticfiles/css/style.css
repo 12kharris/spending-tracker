@@ -1,5 +1,6 @@
 
 /* Base styles */
+
 nav {
     font-size: 20px;
 }
@@ -21,11 +22,22 @@ nav {
 }
 
 /* Dashboard-Month Styles */
+#ribbon-holder {
+    margin: 0;
+    width: 100%;
+}
+
 .top-ribbon {
+    width: 100%;
+    margin: 0;
     background-color: rgba(219, 219, 219, 0.7);
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 300;
     padding: 15px 30px 15px 30px;
+}
+
+.ribbon-bold {
+    font-weight: 500;
 }
 
 .ribbon-head {
@@ -44,19 +56,30 @@ nav {
 .content {
     padding-left: 30px;
     padding-right: 30px;
+    max-width: 100%;
     background-color: #fafafa;
 }
 
 #form-collapse {
     text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: rgba(219, 219, 219, 0.7);
 }
 
 #form-container {
     width: 100%;
-} 
+}
+
+#form-transaction div {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+}
 
 #form-transaction div label {
     display: block;
+    font-weight: 600;
 }
 
 #form-transaction div input {
@@ -71,4 +94,88 @@ nav {
 #btn-cancel {
     background-color: red;
     color: white;
+}
+
+.category-Car{
+    background-color: #fc0303 !important;
+    color: white;
+    border-radius: 8px;
+}
+.category-Clothes{
+    background-color: #d3f54c !important;
+    border-radius: 8px;
+}
+.category-Dining{
+    background-color: #a903fc !important;
+    color: white;
+    border-radius: 8px;
+}
+.category-Education{
+    background-color: #02f502 !important;
+    border-radius: 8px;
+}
+.category-Groceries{
+    background-color: #1703fc !important;
+    color: white;
+    border-radius: 8px;
+}
+.category-Housing{
+    background-color: #f56b02 !important;
+    color: white;
+    border-radius: 8px;
+}
+.category-Leisure{
+    background-color: #0c6b01 !important;
+    color: white;
+    border-radius: 8px;
+}
+.category-Miscellaneous{
+    background-color: #f50288 !important;
+    color: white;
+    border-radius: 8px;
+}
+.category-Presents{
+    background-color: #f5f502 !important;
+    border-radius: 8px;
+}
+.category-Subscriptions{
+    background-color: #03c6fc !important;
+    border-radius: 8px;
+}
+.category-Unassigned{
+    background-color: #999798 !important;
+    border-radius: 8px;
+}
+
+#table-holder {
+    width: 90%;
+    max-width: 1300px;
+    padding-top: 20px;
+}
+
+footer {
+    text-align: center;
+    background-color: rgba(219, 219, 219, 0.7);
+    padding: 10px 0px 10px 0px;
+}
+
+footer p {
+    display: inline;
+    font-size: 25px;
+}
+
+footer p a {
+    text-decoration: none;
+}
+
+#footer-links {
+    word-spacing: 20px;
+}
+
+
+@media screen and (max-width: 700px) {
+    .top-ribbon {
+        padding: 5px;
+        font-size: 18px;
+    }
 }

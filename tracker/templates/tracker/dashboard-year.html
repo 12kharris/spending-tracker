@@ -6,37 +6,44 @@
 
 {% url 'route_to_dashboard' as route %}
 
-<div class="row">
-    <div class="col-2">
-        <p>Yearly Breakdown - {{chosen_year}}</p>
-    </div>
-    <div class="col-10">
-        <div class="text-end">
-            <form class="form-inline" action="{% url 'route_to_dashboard' %}" method="POST">
-                <div class="form-group">
-                    <label for="year-selector">Year</label>
-                    <select class="year-selector" id="year-selector" name="year">
-                        {% for year in years %}
-                        <option>{{year}}</option>
-                        {% endfor %}
-                    </select>
+<div class="row justify-content-center" id="ribbon-holder">
+    <div class="col-12">
+        <div class="row top-ribbon justify-content-center">
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center">
+                <p class="ribbon-head">Yealry Breakdown - <span class="ribbon-bold">{{chosen_month_name}} {{chosen_year}}</span></p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center ribbon-center" style="text-align: center;">
+                <p class="ribbon-head total">Total {{chosen_year}} Expenditure - <span class="ribbon-bold">{{total_exp}}</span></p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="text-end">
+                    <form class="form-inline" action="{% url 'route_to_dashboard' %}" method="POST">
+                        <div class="form-group">
+                            <label for="year-selector">Year</label>
+                            <select class="year-selector" id="year-selector" name="year">
+                                {% for year in years %}
+                                <option>{{year}}</option>
+                                {% endfor %}
+                            </select>
 
-                    <label for="month-selector">Month</label>
-                    <select id="month-selector" name="month">
-                    </select>
-                    {% csrf_token %}
-                    <button type="submit" id="date-submit">GO</button>
+                            <label for="month-selector">Month</label>
+                            <select id="month-selector" name="month">
+                            </select>
+                            {% csrf_token %}
+                            <button type="submit" id="date-submit">GO</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-8" style="height: 500px;">
+    <div class="col-lg-8 col-md-12" style="height: 500px;">
         <canvas id="year-chart"></canvas>
     </div>
-    <div class="col-4" style="height: 500px;">
+    <div class="col-lg-4 col-md-12" style="height: 500px;">
         <canvas id="year-pie"></canvas>
     </div>
 </div>

@@ -1,13 +1,7 @@
 
 /* Base styles */
-body, html{
-    min-width: fit-content;
-    margin:0;
-    padding:0;
-}
 
 nav {
-    width: 100%;
     font-size: 20px;
 }
 
@@ -28,8 +22,14 @@ nav {
 }
 
 /* Dashboard-Month Styles */
+#ribbon-holder {
+    margin: 0;
+    width: 100%;
+}
+
 .top-ribbon {
-    width: 95%;
+    width: 100%;
+    margin: 0;
     background-color: rgba(219, 219, 219, 0.7);
     font-size: 20px;
     font-weight: 300;
@@ -56,6 +56,7 @@ nav {
 .content {
     padding-left: 30px;
     padding-right: 30px;
+    max-width: 100%;
     background-color: #fafafa;
 }
 
@@ -73,6 +74,7 @@ nav {
 #form-transaction div {
     padding-left: 5px;
     padding-right: 5px;
+    padding-bottom: 10px;
 }
 
 #form-transaction div label {
@@ -149,4 +151,31 @@ nav {
     width: 90%;
     max-width: 1300px;
     padding-top: 20px;
+}
+
+footer {
+    text-align: center;
+    background-color: rgba(219, 219, 219, 0.7);
+    padding: 10px 0px 10px 0px;
+}
+
+footer p {
+    display: inline;
+    font-size: 25px;
+}
+
+footer p a {
+    text-decoration: none;
+}
+
+#footer-links {
+    word-spacing: 20px;
+}
+
+
+@media screen and (max-width: 700px) {
+    .top-ribbon {
+        padding: 5px;
+        font-size: 18px;
+    }
 }
