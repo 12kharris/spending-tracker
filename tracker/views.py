@@ -392,7 +392,7 @@ def get_year_by_month(request, year):
             "labels": [res.month for res in results],
             "datasets": [
                 {
-                    "label": 'Dataset 1',
+                    "label": 'Total Expenditure',
                     "data": [res.total_expenditure for res in results],
                     "borderColor": "#fc0303",
                     "backgroundColor": "#fc0303",

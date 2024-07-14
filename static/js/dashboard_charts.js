@@ -26,7 +26,10 @@ async function loadStackedBar(chart_element, heading) {
       plugins: {
         title: {
           display: true,
-          text: heading
+          text: heading,
+          font: {
+            size: 20
+          }
         },
       },
       responsive: true,
@@ -72,10 +75,14 @@ async function loadLineChart(chart_element, heading) {
       plugins: {
         legend: {
           position: 'top',
+          display: "false",
         },
         title: {
           display: true,
-          text: heading
+          text: heading,
+          font: {
+            size: 20
+          }
         }
       }
     },
@@ -116,7 +123,10 @@ async function loadPie(chart_element, heading) {
         },
         title: {
           display: true,
-          text: heading
+          text: heading,
+          font: {
+            size: 20
+          }
         }
       }
     },
