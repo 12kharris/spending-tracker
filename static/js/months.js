@@ -4,7 +4,7 @@ const year_selector = document.getElementById("year-selector");
 const today = new Date();
 const current_year = today.getFullYear();
 const current_month = today.getMonth() + 1;
-const url_dirs = window.location.href.split("/")
+const url_dirs = window.location.href.split("/");
 const selected_year = url_dirs[4];
 const selected_month = url_dirs[5];
 

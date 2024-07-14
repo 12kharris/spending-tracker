@@ -68,7 +68,7 @@ async function loadStackedBar(chart_element, heading) {
     stackedBar.data.datasets.push(dataset);
   });
 
-  stackedBar.update()
+  stackedBar.update();
 }
 
 async function loadLineChart(chart_element, heading) {
@@ -115,7 +115,7 @@ async function loadLineChart(chart_element, heading) {
     lineChart.data.datasets.push(dataset);
   });
 
-  lineChart.update()
+  lineChart.update();
 
 }
 
@@ -161,6 +161,6 @@ async function loadPie(chart_element, heading) {
     pie.data.datasets.push(dataset);
   });
 
-  pie.update()
+  pie.update();
 }
 

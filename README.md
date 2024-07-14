@@ -130,6 +130,16 @@ This test involved a user attempting to navigate to a monthly and yearly dashboa
 
 ### Automated Testing
 
+
+## Code Validation
+### HTML
+
+### CSS
+The CSS code passed the W3C validator with no errors
+
+### Javascript
+The only errors were the use of the 'Chart' type. This is handled by the ChartJS CDN so can be ignored. The only other messages were warnings from using const, let and arrow functions (e.g. "'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).")
+
 ## Problems encountered
 - There was an issue with setting up the db view for daily spending. The view required a change so the migration was rolled back. However, when running the migration again, django did not run the migration to recreate the view as it thought it was already implemented. Checking the migrations table in the db it believed the migration had been run but the view did not exist. After deleting the migration from the db table and re-running the migrations it errored saying that the object it was trying to create (the view) already existed, despite it not existing on the db. To resolve this, I abandoned that model and made a new view with the same logic but a different name.
 - The next view issue encountered was where using django's ORM to query the model which the view was the db_table for never returned any objects. There was data in the view in the db but for whatever reason, no data was ever returned. As a result, I created a second model not attached to any db table where I could run raw SQL statements and this returned the data in the view.

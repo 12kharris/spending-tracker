@@ -1,5 +1,4 @@
 const edit_buttons = document.getElementsByClassName("btn-edit-transaction");
-const delete_buttons = document.getElementsByClassName("btn-delete-transaction");
 const submit_button = document.getElementById("btn-submit");
 const cancel_button = document.getElementById("btn-cancel");
 const transaction_form = document.getElementById("form-transaction");
@@ -43,10 +42,10 @@ for(let button of edit_buttons) {
         transaction_form_date.value = `${yr}-${fmt_month}-${fmt_day}`;
 
         //change form action to call the transaction_edit function
-        transaction_form.setAttribute("Action", `transaction_edit/${transaction_id}`)
+        transaction_form.setAttribute("Action", `transaction_edit/${transaction_id}`);
         submit_button.innerText = "Update";
         transaction_form_category.focus();
-    })
+    });
 }
 
 //clear the form when cancel is called and remove edit form action
@@ -58,4 +57,4 @@ cancel_button.addEventListener("click", (e) => {
 
     transaction_form.removeAttribute("Action");
     submit_button.innerText = "Add Expenditure";
-})
+});
