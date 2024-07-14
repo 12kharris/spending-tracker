@@ -8,6 +8,7 @@ const url_dirs = window.location.href.split("/")
 const selected_year = url_dirs[4];
 const selected_month = url_dirs[5];
 
+//Populate the year selector with the chosen year from the URL
 for (let selector of year_selectors) {
     let year_element;
     let year_options = selector.getElementsByTagName("option");
@@ -27,6 +28,9 @@ populateMonth();
 
 
 function getValidMonths() {
+    /**
+   * Populate the dashboard date form with only valid months for the given year
+   */
     month_selector.innerHTML = "";
     month_selector.innerHTML += "<option>All</option>";
     if (year_selector.value == current_year) {
@@ -42,8 +46,12 @@ function getValidMonths() {
 }
 
 function populateMonth() {
+    /**
+   * Populate the month selector with the specified value from the URL
+   */
     let month_element;
     let month_options = month_selector.getElementsByTagName("option");
+    //selected_month == "" when yearly dashboard is chosen
     if (selected_month === "") {
         month_element = month_options[0];
     }

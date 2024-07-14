@@ -31,6 +31,7 @@ for(let button of edit_buttons) {
         transaction_form_category.value = category_element.value;
         transaction_form_reference.value = transaction_reference;
 
+        //format the date to YYYY-MM-DD
         date = new Date(transaction_date);
         let yr = `${date.getFullYear()}`;
         let mnth = `${date.getMonth() + 1}`;
@@ -41,12 +42,14 @@ for(let button of edit_buttons) {
 
         transaction_form_date.value = `${yr}-${fmt_month}-${fmt_day}`;
 
+        //change form action to call the transaction_edit function
         transaction_form.setAttribute("Action", `transaction_edit/${transaction_id}`)
         submit_button.innerText = "Update";
         transaction_form_category.focus();
     })
 }
 
+//clear the form when cancel is called and remove edit form action
 cancel_button.addEventListener("click", (e) => {
     transaction_form_amount.value = 0.01;
     transaction_form_category.value = 1;

@@ -6,6 +6,7 @@
 
 {% url 'route_to_dashboard' as route %}
 
+<!--Top Ribbon for total and dashboard date form-->
 <div class="row justify-content-center" id="ribbon-holder">
     <div class="col-12">
         <div class="row top-ribbon justify-content-center">
@@ -39,11 +40,12 @@
     </div>
 </div>
 
+<!--charts-->
 <div class="row">
-    <div class="col-lg-8 col-md-12" style="height: 500px;">
+    <div class="col-lg-8 col-md-12 chart">
         <canvas id="year-chart"></canvas>
     </div>
-    <div class="col-lg-4 col-md-12" style="height: 500px;">
+    <div class="col-lg-4 col-md-12 chart">
         <canvas id="year-pie"></canvas>
     </div>
 </div>

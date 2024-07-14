@@ -3,6 +3,8 @@ const monthly_pie = document.getElementById("monthly-pie");
 const yearly_chart = document.getElementById("year-chart");
 const yearly_pie = document.getElementById("year-pie");
 
+//this script is used across yearly and monthly dashboards
+//therefore must account for case where some elements don't exist
 if (daily_chart !== null) {
   loadStackedBar(daily_chart, 'Spending by Day');
 }
@@ -20,6 +22,9 @@ else if (yearly_pie !== null) {
 
 //https://dmitripavlutin.com/fetch-with-json/
 async function loadStackedBar(chart_element, heading) {
+  /**
+   * Populate the given stacked bar chart_element with data and load the chart
+   */
   const config = {
     type: 'bar',
     options: {
@@ -67,6 +72,9 @@ async function loadStackedBar(chart_element, heading) {
 }
 
 async function loadLineChart(chart_element, heading) {
+  /**
+   * Populate the given line chart chart_element with data and load the chart
+   */
   const config = {
     type: 'line',
     options: {
@@ -112,6 +120,9 @@ async function loadLineChart(chart_element, heading) {
 }
 
 async function loadPie(chart_element, heading) {
+  /**
+   * Populate the given pie chart chart_element with data and load the chart
+   */
   const config = {
     type: 'pie',
     options: {

@@ -3,6 +3,9 @@
 # so they can customise the colours of each category
 
 def generate_category_colours():
+    """
+    Returns a dictionary of a colour for each category to be used in charts
+    """
     transaction_cat_colours = dict()
     transaction_cat_colours["Car"] = "#fc0303"
     transaction_cat_colours["Clothes"] = "#d3f54c"

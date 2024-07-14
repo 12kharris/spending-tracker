@@ -6,6 +6,7 @@
 
 {% url 'route_to_dashboard' as route %}
 
+<!--Top Ribbon for total and dashboard date form-->
 <div class="row justify-content-center" id="ribbon-holder">
     <div class="col-12">
         <div class="row top-ribbon justify-content-center">
@@ -39,17 +40,20 @@
     </div>
 </div>
 
+
 <div class="content">
+    <!--Charts-->
     <div class="row">
-        <div class="col-lg-8 col-md-12" style="height: 500px;">
+        <div class="col-lg-8 col-md-12 chart">
             <canvas id="daily-chart"></canvas>
         </div>
-        <div class="col-lg-4 col-md-12" style="height: 500px;">
+        <div class="col-lg-4 col-md-12 chart">
             <canvas id="monthly-pie"></canvas>
         </div>
     </div>
 
     <hr>
+    <!--Add/edit form-->
     <h4>Add an Expenditure</h4>
     <div class="row justify-content-center" id="form-collapse">
         <div class="col-12" id="form-container">
@@ -96,6 +100,7 @@
 
     <hr>
 
+    <!--All expenditures-->
     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#all-expenditures" aria-expanded="false" aria-controls="collapseExpenditures">
         See all Expenditures
     </button>

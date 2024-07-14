@@ -40,6 +40,10 @@ nav {
 }
 
 /* Dashboard-Month Styles */
+.chart {
+    height: 500px;
+}
+
 #ribbon-holder {
     margin: 0;
     width: 100%;

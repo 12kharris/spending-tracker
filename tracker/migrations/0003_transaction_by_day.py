@@ -25,6 +25,8 @@ class Migration(migrations.Migration):
                 'managed': (False,),
             },
         ),
+        #gets every day since 2023-01-01 and the total expenditure that day per category for each user
+        #include columns for month and year for easier filtering for views
         migrations.RunSQL(
             """
             CREATE VIEW Daily_Transactions AS
