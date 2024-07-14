@@ -61,21 +61,85 @@ The backend logic checks the login state of all requests which connect to the da
 
 
 ### Dashboards
-All dashboards can be accessed using the 'Dashboard' navigation link once a user is logged in. At the top of the dashboard, a user can choose a yearly dashboard by selecting the 'All' option from the month dropdown or a specific month to access the monthly dashboards.
+All dashboards can be accessed using the 'Dashboard' navigation link once a user is logged in. At the top of the dashboard, a user can choose a yearly dashboard by selecting the 'All' option from the month dropdown or a specific month to access the monthly dashboards. Months and years in the future are not available from the dropdown list and the selection of available months is determined by looking at the current date and the year that was selected. If a user attempts to navigate to a future month by specifying the year and month in the url, they will be redirected to the current month's dashboard.
 
-The dashboard navigation link automatically navigates to the current month's dashboard when clicked by looking at the current date. 
+The dashboard navigation link automatically navigates to the current month's dashboard when clicked by looking at the current date.
 
 #### Year Dashboard
-The yearly dashboard shows provides insights to a user's spending over an entire year. 
+The yearly dashboard provides insights to a user's spending over an entire year. It features a line chart with the total expenditure for each month during the year, up to the present month. 
+
+CHART IMAGE
+
+At the top of the page is a ribbon showing the year and the total expenditure for that year so far.
+
+Next to the line chart is a pie chart which shows the distribution of spending across the categories over the year.
+
+PIE CHART
+
+All charts are generated from a database view of the epxenditures. The SQL for the view can be found in the 0003 migrations file for the 'tracker' app. As such, the charts will automatically update when more data is added.
 
 
 ### Month Dashboard
-#### Add Expenditures
-#### Edit Expenditures
-#### Delete Expenditures
+The monthly dashboard shows the breakdown of spending for a given month. This is also where the managing of expenditure entries is done. 
 
+#### Daily Spending Stacked Bar Chart
+The monthly dashboard page features a stacked bar chart which shows the total expenditure for each day of the month and what categories made up that day of spending. When hovered over, each category in a bar will show its expenditure amount.
+
+STACKED BAR
+
+#### Monthly Pie Chart
+Similar to the yearly dashboard, the monthly dashboard features a pie chart with the distribution of spending over the month across the different spending catgeories.
+
+PIE CHART
+
+#### Add Expenditures
+The page features a simple form for a user to add an expenditure to. The 'amount' field supports up to 2 decimal places and there is logic which handles entires which do not fit this requirement. The 'reference' category is a text field where the user can enter anything they wish to identify what the expenditure was. The 'category' field is a dropdown list for every category that is defined. There is also a date picker for the date of the expenditure. For a better user experience, the user can enter any date of expenditure between 1st Jan 2023 and now rather than only allowing for entering data for the current month. Finally there is a button to add the expenditure and a button to cancel which clears the form.
+
+ADD FORM
+
+When submitted, the page will refresh and a message will show at the top of the page detailing whether the expenditure was successfully added or not. As the charts are based on a database view, they will update to show the new expedniture (if it was added in the selected month).
+
+MESSAGE
+
+#### View Expenditures
+Below the add form is a button to show all expenditures for that month. This is a collapsable table. In the table the amount, reference, category and date are shown. The categories are colour coded to match the charts. There is also buttons to edit and delete any expenditure.
+
+TABLE
+
+#### Edit Expenditures
+When a user clicks to edit a given transaction, the add form is populated with the data for that expenditure. The page will automatically focus on this form if it is off the screen. The 'add' button is changed to an 'update' button and 'cancel' will reset the form back to the 'add' form state. 
+
+EDIT FORM
+
+When a user submits an edit, the page will refresh and a message will be show at the top of the page showing whether the edit was successful. The charts will also show the newly edited data.
+
+#### Delete Expenditures
+When a user chooses to delete an expenditure, a modal will appear with a confirmation message asking if they are sure they want to delete the expenditure. If the choose to do so, the expenditure will be permenantly deleted and the page refreshed. A message will appear detailing if the expenditure was successfully deleted.
+
+DELETE MODAL
+
+## Testing
+### Manual Testing
+The following tests were done maually to ensure the application is functioning as expected:
+#### Attempted access to a dashboard when not logged in
+This test involved a non-logged in user entering a URL for a dashboard page. The result was the user being redirected back to the home page
+#### Attempted access to raw data
+This test involved a non-logged in user attempting to see JSON data used to populate the charts of the dashboard by manually entering the URL. The result was the user being redirected back to the home page
+#### Attempted navigation to a dashboard in the future
+This test involved a user attempting to navigate to a monthly and yearly dashboard which is in the future. The result of this test was the user being redirected to the current month/year's dashboard.
+
+### Automated Testing
 
 ## Problems encountered
 - There was an issue with setting up the db view for daily spending. The view required a change so the migration was rolled back. However, when running the migration again, django did not run the migration to recreate the view as it thought it was already implemented. Checking the migrations table in the db it believed the migration had been run but the view did not exist. After deleting the migration from the db table and re-running the migrations it errored saying that the object it was trying to create (the view) already existed, despite it not existing on the db. To resolve this, I abandoned that model and made a new view with the same logic but a different name.
 - The next view issue encountered was where using django's ORM to query the model which the view was the db_table for never returned any objects. There was data in the view in the db but for whatever reason, no data was ever returned. As a result, I created a second model not attached to any db table where I could run raw SQL statements and this returned the data in the view.
+- I originally intended for the 'Add expenditure' form to be a collapsable like the expenditure table. However, I encountered a limitation of using a button to do this. The intention was to expand the form when the 'edit' button was clicked. In Javascript I would call the collapse.show() method which should only show the collapsable and not collapse it if it is already showing. However this was not occurring. When debugging, the event listener on the 'edit' button did not look at the current state of the page and so always thought the form was collapsed and would call the show() method which closed the form (I am unsure why show() would ever close a collapsable). To avoid this, the collapsable was abandoned for the form.
 - A few days before due date, the postgres server which hosts the database for this project was not allowing any new connections. This lead to a delay in development of the project. In the future, hosting my own postgres server would allow more control over issues that arise.
+
+## Future Features
+- Add multiple expenditures at a time - This is the main feature I would like to add. It would be a better user experience if more than one expedniture could be added at once by having an 'add another' button which duplicates the form, enabling multiple expenditures to be added at once.
+- User cutomsiable categories - Another feature would be to give users the default categories and then allow them to change the category names and colours if they choose.
+- Direction of transaction - The db model is called 'transaction' rather than 'expenditure' to allow for a field on the model 'Direction' to eventually be added. This could dictate inflows as well as outflows so the app could also offer revenue streams as well as expedniture tracking. This could be one step to becoming a financial hub as opposed to just a spending tracker to a user.
+- Automatic category assignment - It would be nice to store some strings for each user and category for the references. If a user inputs a refernce, the app could recognise this input and automatically assign a category to it.
+- Upload of csv input - Banks allow statements to be downloaded in a csv format. If a user could upload this and the 'add' forms automatically generated with automatic category assignment, this could save lots of time inputting data manually.
+- Use of bank APIs - Some banks offer APIs which a user with an account for that bank can use to see their transaction history. If multiple banks offer this, then a feature far down the road could utilise these for a user to automatically sync their data as opposed to relying on manual user input.

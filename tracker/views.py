@@ -197,10 +197,18 @@ def route_to_chosen_dashboard(request):
             year = request.POST.get("year")
             month = request.POST.get("month")
 
+            current_year = datetime.now().year
+            current_month = datetime.now().month
+
             if month == "All":
+                if year > current_year:
+                    return HttpResponseRedirect(reverse('get_year_dashboard', args=[current_year]))
                 return HttpResponseRedirect(reverse('get_year_dashboard', args=[year]))
+            elif year > current_year or (year == current_year and month > current_month):
+                return HttpResponseRedirect(reverse('get_month_dashboard', args=[current_year, current_month]))
             else:
-                return HttpResponseRedirect(reverse('get_month_dashboard', args=[year, month]))
+                HttpResponseRedirect(reverse('get_month_dashboard', args=[year, month]))
+
     else:
         return HttpResponseNotFound("Page not found")
 
