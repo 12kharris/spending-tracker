@@ -21,6 +21,24 @@ nav {
     text-decoration: underline;
 }
 
+/* Home styles */
+.content div {
+    padding-top: 15px;
+}
+
+.content hr {
+    margin-top: 30px;
+}
+
+.home-img {
+    max-height: 400px;
+    text-align: center;
+}
+
+.img-fluid {
+    max-height: 400px;
+}
+
 /* Dashboard-Month Styles */
 #ribbon-holder {
     margin: 0;
