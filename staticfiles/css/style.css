@@ -113,10 +113,11 @@ nav {
     color: white;
 }
 
-#btn-cancel {
+.btn-danger {
     background-color: red;
     color: white;
 }
+
 
 .category-Car{
     background-color: #fc0303 !important;

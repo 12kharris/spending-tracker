@@ -272,18 +272,18 @@ def route_to_chosen_dashboard(request):
 
             # logic to prevent access to future months/years
             if month == "All":
-                if year > current_year:
+                if int(year) > current_year:
                     return HttpResponseRedirect(reverse('get_year_dashboard',
                                                 args=[current_year]))
                 return HttpResponseRedirect(reverse('get_year_dashboard',
                                             args=[year]))
-            elif year > current_year or (year == current_year
-                                         and month > current_month):
+            elif int(year) > current_year or (year == current_year
+                                         and int(month) > int(current_month)):
                 return HttpResponseRedirect(reverse('get_month_dashboard',
                                                     args=[current_year,
                                                           current_month]))
             else:
-                HttpResponseRedirect(reverse('get_month_dashboard',
+                return HttpResponseRedirect(reverse('get_month_dashboard',
                                              args=[year, month]))
 
     else:

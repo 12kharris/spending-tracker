@@ -7,6 +7,20 @@ const transaction_form_reference = document.getElementById("form-ref");
 const transaction_form_category = document.getElementById("form-category");
 const transaction_form_date = document.getElementById("form-date");
 const transaction_category_options = transaction_form_category.getElementsByTagName("option");
+const datepicker = document.getElementById("form-date");
+const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+const deleteButtons = document.getElementsByClassName("btn-delete");
+const deleteConfirm = document.getElementById("deleteConfirm");
+
+// Restrict the date picker to max of current date
+let todaydate = new Date();
+let yr = `${todaydate.getFullYear()}`;
+let mnth = `${todaydate.getMonth() + 1}`;
+let day = `${todaydate.getDate()}`;
+let fmt_month = mnth.padStart(2, '0');
+let fmt_day = day.padStart(2, '0');
+
+datepicker.setAttribute("max", `${yr}-${fmt_month}-${fmt_day}`);
 
 /**
  * Add event listeners which populate the transaction form with data from the selected transaction
@@ -47,6 +61,14 @@ for(let button of edit_buttons) {
         transaction_form_category.focus();
     });
 }
+
+for (let button of deleteButtons) {
+    button.addEventListener("click", (e) => {
+      let transaction_id = e.target.getAttribute("transaction_id");
+      deleteConfirm.href = `transaction_delete/${transaction_id}`;
+      deleteModal.show();
+    });
+  }
 
 //clear the form when cancel is called and remove edit form action
 cancel_button.addEventListener("click", (e) => {

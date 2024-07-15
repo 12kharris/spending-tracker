@@ -85,14 +85,14 @@
                 </div>
                 <div class="col-lg-2 col-sm-6">
                     <label for="form-date">Date</label>
-                    <input type="date" id="form-date" name="transaction_date" required>
+                    <input type="date" id="form-date" name="transaction_date" min="2023-01-01"  required>
                     {% csrf_token %}
                 </div>
                 <div class="col-lg-2 col-sm-6">
                     <button type="submit" id="btn-submit" class="btn">Add Expenditure</button>
                 </div>
                 <div class="col-lg-1 col-sm-6">
-                    <button class="btn" id="btn-cancel">Cancel</button>
+                    <button class="btn btn-danger" id="btn-cancel">Cancel</button>
                 </div>
             </form>
         </div>
@@ -123,15 +123,35 @@
                         <td class="category-{{transaction.category.name}}" id="category-{{transaction.id}}" class="category">{{transaction.category.name}}</td>
                         <td id="transaction_date-{{transaction.id}}" class="date">{{transaction.transaction_date}}</td>
                         <td>
-                            <button class="btn-edit-transaction" transaction_id="{{transaction.id}}">Edit</button>
+                            <button class="btn btn-primary" transaction_id="{{transaction.id}}">Edit</button>
                         </td>
                         <td>
-                            <a class="btn-delete-transaction" transaction_id="{{transaction.id}}"
-                                href="transaction_delete/{{transaction.id}}">Delete</a>
+                            <a class="btn btn-danger btn-delete" transaction_id="{{transaction.id}}">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete confirmation modal -->
+<!--Inspired by Code Institute Blog walkthrough modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Expenditure?</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this expenditure?
+                This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a id="deleteConfirm" href="#" class="btn btn-danger">Delete</a>
             </div>
         </div>
     </div>
