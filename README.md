@@ -48,7 +48,7 @@ Trello offers more functionality than GitHub projects but the tasks were copied 
 
 
 ## Features
-This section outlines the various features of the MoneyTree application
+This section outlines the various features of the MoneyTree application. **If using the demo user, data has been entered from mid 2023 to May 2024**
 
 ### Home Page
 The home page contains content for users who do not have an account. All features of the application can only be used if a user has an account. The page uses images to show the various features of the app with a short explanation of the feature. The features detailed include: the monthly spending chart, the spending category Pie chart, the daily spending stacked bar chart and the adding, updating and deleting of expenditures.
@@ -145,6 +145,7 @@ The only errors were the use of the 'Chart' type. This is handled by the ChartJS
 - The next view issue encountered was where using django's ORM to query the model which the view was the db_table for never returned any objects. There was data in the view in the db but for whatever reason, no data was ever returned. As a result, I created a second model not attached to any db table where I could run raw SQL statements and this returned the data in the view.
 - I originally intended for the 'Add expenditure' form to be a collapsable like the expenditure table. However, I encountered a limitation of using a button to do this. The intention was to expand the form when the 'edit' button was clicked. In Javascript I would call the collapse.show() method which should only show the collapsable and not collapse it if it is already showing. However this was not occurring. When debugging, the event listener on the 'edit' button did not look at the current state of the page and so always thought the form was collapsed and would call the show() method which closed the form (I am unsure why show() would ever close a collapsable). To avoid this, the collapsable was abandoned for the form.
 - A few days before due date, the postgres server which hosts the database for this project was not allowing any new connections. This lead to a delay in development of the project. In the future, hosting my own postgres server would allow more control over issues that arise.
+- After the above issue was resolved, I could no longer connect to the database using pgAdmin. The connection would always timeout. As the deadline was approaching, data for the demo user was not entered for all months of the year. Therefore, to see the application with a wide variety of data for the demo user, months between 2023-08 and 2024-05 should be selected.
 
 ## Future Features
 - Add multiple expenditures at a time - This is the main feature I would like to add. It would be a better user experience if more than one expedniture could be added at once by having an 'add another' button which duplicates the form, enabling multiple expenditures to be added at once.

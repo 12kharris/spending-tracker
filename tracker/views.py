@@ -214,7 +214,7 @@ def get_monthly_split(request, year, month):
             "labels": [res.cat_name for res in results],
             "datasets": [
                 {
-                    "label": 'dataset 1',
+                    "label": 'Monthly Total',
                     "data": [res.monthly_total for res in results],
                     "backgroundColor": [colours[colour] for colour in colours],
                 },
@@ -490,7 +490,7 @@ def get_yearly_split(request, year):
             "labels": [res.cat_name for res in results],
             "datasets": [
                 {
-                    "label": 'dataset 1',
+                    "label": 'Yearly Total',
                     "data": [res.yearly_total for res in results],
                     "backgroundColor": [colours[colour] for colour in colours],
                 },

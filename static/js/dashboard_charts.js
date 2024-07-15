@@ -42,9 +42,23 @@ async function loadStackedBar(chart_element, heading) {
       scales: {
         x: {
           stacked: true,
+          title: {
+            display: true,
+            text: 'Date',
+            font: {
+              size: 16
+            }
+          }
         },
         y: {
-          stacked: true
+          stacked: true,
+          title: {
+            display: true,
+            text: 'Expenditure',
+            font: {
+              size: 16
+            }
+          }
         }
       }
     }
@@ -90,6 +104,28 @@ async function loadLineChart(chart_element, heading) {
           text: heading,
           font: {
             size: 20
+          }
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          title: {
+            display: true,
+            text: 'Month Number',
+            font: {
+              size: 16
+            }
+          }
+        },
+        y: {
+          stacked: true,
+          title: {
+            display: true,
+            text: 'Total Expenditure',
+            font: {
+              size: 16
+            }
           }
         }
       }
