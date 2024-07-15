@@ -7,24 +7,26 @@
 
 {% block content %}
 
-<h1>{% trans "Sign In" %}</h1>
+<div class="content">
+  <h1>{% trans "Sign In" %}</h1>
 
-<p>
-  {% blocktrans %}If you have not created a MoneyTree account yet, then please
-  <a href="{{ signup_url }}">sign up</a> first.
+  <p>
+    {% blocktrans %}If you have not created a MoneyTree account yet, then please
+    <a href="{{ signup_url }}">sign up</a> first.
 
-  Or log in below
-  {% endblocktrans %}
-</p>
+    Or log in below
+    {% endblocktrans %}
+  </p>
 
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-</form>
+  <form class="login" method="POST" action="{% url 'account_login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <button class="primaryAction btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+    <a class="button secondaryAction btn btn-secondary" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+  </form>
+</div>
 
 {% endblock content %}

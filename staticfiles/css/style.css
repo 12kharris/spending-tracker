@@ -1,5 +1,8 @@
 
 /* Base styles */
+main {
+    padding-bottom: 100px;
+}
 
 nav {
     font-size: 20px;
@@ -176,10 +179,12 @@ nav {
     padding-top: 20px;
 }
 
+/* Footer styles */
+
 footer {
     text-align: center;
-    background-color: rgba(219, 219, 219, 0.7);
-    padding: 10px 0px 10px 0px;
+    background-color: rgba(219, 219, 219, 1);
+    padding: 10px 0px 0px 0px;
 }
 
 footer p {
