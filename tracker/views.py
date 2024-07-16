@@ -1,6 +1,6 @@
 from django.db import connection
 from datetime import datetime, date
-from .models import Category, Transaction, Transactions_by_Day, Monthly_Split
+from .models import Category, Transaction, Monthly_Split, Transactions_by_Day
 from .models import Yearly_Split, Monthly_Totals
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, reverse
