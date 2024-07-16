@@ -69,7 +69,7 @@
                 </div>
                 <div class="col-lg-2 col-sm-6">
                     <label for="form-category">Category</label>
-                    <select id="form-category" name="category" required>
+                    <select id="form-category" name="category">
                         <option>Car</option>
                         <option>Groceries</option>
                         <option>Dining Out</option>
@@ -123,10 +123,10 @@
                         <td class="category-{{transaction.category.name}}" id="category-{{transaction.id}}" class="category">{{transaction.category.name}}</td>
                         <td id="transaction_date-{{transaction.id}}" class="date">{{transaction.transaction_date}}</td>
                         <td>
-                            <button class="btn btn-primary" transaction_id="{{transaction.id}}">Edit</button>
+                            <button class="btn btn-primary btn-edit-transaction" data-transaction_id="{{transaction.id}}">Edit</button>
                         </td>
                         <td>
-                            <a class="btn btn-danger btn-delete" transaction_id="{{transaction.id}}">Delete</a>
+                            <a class="btn btn-danger btn-delete" data-transaction_id="{{transaction.id}}">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}

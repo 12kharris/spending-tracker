@@ -27,7 +27,7 @@ datepicker.setAttribute("max", `${yr}-${fmt_month}-${fmt_day}`);
  */
 for(let button of edit_buttons) {
     button.addEventListener("click", (e) => {
-        let transaction_id = e.target.getAttribute("transaction_id");
+        let transaction_id = e.target.getAttribute("data-transaction_id");
         let transaction_amount = document.getElementById(`amount-${transaction_id}`).innerText;
         let transaction_reference = document.getElementById(`reference${transaction_id}`).innerText;
         let transaction_category = document.getElementById(`category-${transaction_id}`).innerText;
@@ -64,7 +64,7 @@ for(let button of edit_buttons) {
 
 for (let button of deleteButtons) {
     button.addEventListener("click", (e) => {
-      let transaction_id = e.target.getAttribute("transaction_id");
+      let transaction_id = e.target.getAttribute("data-transaction_id");
       deleteConfirm.href = `transaction_delete/${transaction_id}`;
       deleteModal.show();
     });
