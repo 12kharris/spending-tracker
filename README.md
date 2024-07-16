@@ -119,17 +119,38 @@ When a user chooses to delete an expenditure, a modal will appear with a confirm
 DELETE MODAL
 
 ## Testing
-### Manual Testing
-The following tests were done maually to ensure the application is functioning as expected:
+### Python Manual Testing
+The following tests were done maually to ensure the backend of the application is functioning as expected:
 #### Attempted access to a dashboard when not logged in
-This test involved a non-logged in user entering a URL for a dashboard page. The result was the user being redirected back to the home page
-#### Attempted access to raw data
-This test involved a non-logged in user attempting to see JSON data used to populate the charts of the dashboard by manually entering the URL. The result was the user being redirected back to the home page
+This test involved a non-logged in user entering a URL for a dashboard page. The result was the user being redirected back to the home page which is a PASS.
+#### Attempted access to raw data when not logged in
+This test involved a non-logged in user attempting to see JSON data used to populate the charts of the dashboard by manually entering the URL. The result was the user being redirected back to the home page which is a PASS.
 #### Attempted navigation to a dashboard in the future
-This test involved a user attempting to navigate to a monthly and yearly dashboard which is in the future. The result of this test was the user being redirected to the current month/year's dashboard.
+This test involved a user attempting to navigate to a monthly and yearly dashboard which is in the future by manually entering a url containing a future date. The result of this test was the user being redirected to the current month/year's dashboard which is a PASS.
 
-### Automated Testing
+### Python Automated Testing
+The automated tests that were run are contained in the tests.py file. The tests are as follows:
+#### Added transaction displays on monthly dashboard page
+A test transaction was created and a test conducted to see if it appeard on the monthly dashboard page. The result was a pass.
+#### Test form POST data can successfully create a new transaction
+POST data which is created from submitting the 'add transaction' form was made and used in the get_month_dashboard view function. The POST data successfully created a new transaction and the success message was saved which is a PASS.
+#### Test an attempt to add a transaction with a blank date
+POST data which is created from submitting the 'add transaction' form was made and used in the get_month_dashboard view function. This POST data had an empty date. The result from this test was the page still returning but the error message being present in the response.content which is a PASS.
 
+### Javascript Manual Testing
+The Javascript interactivity of the website was tested manually
+#### Dashboard month restrictions
+The dashboard month form should not allow for furutre months to be selected. To test this, the year of the form was changed and the month options in the month input were inspected. For 2024 (as of July 2024), the month options were 'All', 1, 2, 3, 4, 5, 6 and 7 which is as expected. For 2023, months 'All' and 1-12 were present which is expected as this is in the past. The page was refreshed for a 2023 month and the months were still ass expected which is a PASS.
+#### Dashboard chart updates
+The dashboard charts should update to show the current data in the database. To test this, a new transaction was added with the 'add transaction' form on a day with no data. The page automatically refreshes and the new transaction can be seen in the dashboard charts. This is a PASS.
+#### Dashboard messages should automatically disappear
+When a message appears at the top of the dashboard, it should automatically clear after 10 seconds. To test this, a transaction was updated which creates a message at the top of the dashboard page. After 10 seconds, the message disappeares which is a PASS.
+#### Edit button should add the transaction content to the form
+When the 'edit' button is pressed, the content of the transaction form should be populated with the content of the existing transaction. To test this, a transaction from every category was updated. Each time the edit button was clicked, the add form was siccessfully updated with the content from the transaction which is a PASS.
+#### Dashboard page should focus on 'add' form when 'edit' is pressed
+When a user has scrolled and the 'add' form is off the page and 'edit' is pressed, the page should scroll to the 'add' form for a good user experience. To test this, the page was scrolled so the form was off the page and 'edit' was pressed. The result of this test was a PASS as the page automatically scrolled to the 'add' form.
+#### Cancel button should clear the 'add' form
+When a user clicks the 'cancel' button, the add form should be reset back to clear and if applicable, the 'update' button should return to an 'add' button. To test this, the form was filled out and the cancel button pressed. In this case the test PASSed as the form was reset. Additionally, an 'edit' button was pressed which filled in the form and changed the 'add' button to an 'update' button. The cancel button was then clicked and the form was reset and the 'update' button was changed back to an 'add' button. The form was then filled out and the 'add' button pressed and the transaction was successfully added which is a PASS.
 
 ## Code Validation
 ### HTML

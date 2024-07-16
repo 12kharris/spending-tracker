@@ -354,6 +354,11 @@ def get_month_dashboard(request, year, month):
                 request, messages.SUCCESS,
                 'Transaction Added Successfully'
             )
+        else:
+            messages.add_message(
+                request, messages.ERROR,
+                'Error adding transaction'
+            )
 
     transaction_form = TransactionForm()
 

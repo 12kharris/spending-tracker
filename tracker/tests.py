@@ -14,9 +14,11 @@ class TestViews(TestCase):
         )
         self.category = Category(name="Test Cat", description="Test Cat Desc")
         self.category.save()
-        self.transaction = Transaction(amount=10.01, reference = "reference",user=self.user,
-                         category=self.category, transaction_date="2024-01-01",
-                         )
+        self.transaction = Transaction(amount=10.01, reference = "reference",
+                                       user=self.user,
+                                       category=self.category,
+                                       transaction_date="2024-01-01",
+                                      )
         self.transaction.save()
 
     def test_render_dashboard_month_page_with_transaction_form(self):
@@ -63,5 +65,9 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotIn(
             b'Transaction Added Successfully',
+            response.content
+        )
+        self.assertIn(
+            b'Error adding transaction',
             response.content
         )
