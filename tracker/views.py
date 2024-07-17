@@ -176,36 +176,69 @@ def get_monthly_split(request, year, month):
     # get all categories and the total expenditure over the month for the
     # given user
     # also includes the % split
-    results = Monthly_Split.objects.raw(
-        """
-        SELECT 1 AS id, tot.cat_name, tot.monthly_total
-                ,CAST(tot.monthly_total * 100
-                    / SUM(CASE WHEN monthly_total = 0 THEN 1
-                        ELSE monthly_total END)
-                        OVER(PARTITION BY tot.username) AS DECIMAL(19,2)
-                    ) AS pct
-        FROM (
-            SELECT 	cat.name AS cat_name
-                    ,%s AS username
-                    ,SUM(CASE WHEN amount IS NULL THEN 0 ELSE amount END)
-                        AS monthly_total
-            FROM tracker_category cat
-            LEFT JOIN (
-                SELECT *
-                FROM tracker_transaction trn
-                JOIN auth_user us ON trn.user_id = us.id
-                WHERE transaction_date BETWEEN make_date(%s, %s, 1)
-                AND make_date(%s, %s, 1)
-                    + interval '1 month' - interval '1 day'
-                AND us.username = %s
-            ) trn ON cat.id = trn.category_id
-            GROUP BY cat.name
-        ) tot
-        ORDER BY cat_name
-        """,
-        [request.user.username, year, month, year, month,
-         request.user.username]
-    )
+    # only allow up to current date
+    if year == datetime.now().year and month == datetime.now().month:
+        results = Monthly_Split.objects.raw(
+            """
+            SELECT 1 AS id, tot.cat_name, tot.monthly_total
+                    ,CAST(tot.monthly_total * 100
+                        / SUM(CASE WHEN monthly_total = 0 THEN 1
+                            ELSE monthly_total END)
+                            OVER(PARTITION BY tot.username) AS DECIMAL(19,2)
+                        ) AS pct
+            FROM (
+                SELECT 	cat.name AS cat_name
+                        ,%s AS username
+                        ,SUM(CASE WHEN amount IS NULL THEN 0 ELSE amount END)
+                            AS monthly_total
+                FROM tracker_category cat
+                LEFT JOIN (
+                    SELECT *
+                    FROM tracker_transaction trn
+                    JOIN auth_user us ON trn.user_id = us.id
+                    WHERE transaction_date BETWEEN make_date(%s, %s, 1)
+                    AND CURRENT_DATE
+                    AND us.username = %s
+                ) trn ON cat.id = trn.category_id
+                GROUP BY cat.name
+            ) tot
+            ORDER BY cat_name
+            """,
+            [request.user.username, year, month,
+            request.user.username]
+        )
+
+    else:
+        results = Monthly_Split.objects.raw(
+            """
+            SELECT 1 AS id, tot.cat_name, tot.monthly_total
+                    ,CAST(tot.monthly_total * 100
+                        / SUM(CASE WHEN monthly_total = 0 THEN 1
+                            ELSE monthly_total END)
+                            OVER(PARTITION BY tot.username) AS DECIMAL(19,2)
+                        ) AS pct
+            FROM (
+                SELECT 	cat.name AS cat_name
+                        ,%s AS username
+                        ,SUM(CASE WHEN amount IS NULL THEN 0 ELSE amount END)
+                            AS monthly_total
+                FROM tracker_category cat
+                LEFT JOIN (
+                    SELECT *
+                    FROM tracker_transaction trn
+                    JOIN auth_user us ON trn.user_id = us.id
+                    WHERE transaction_date BETWEEN make_date(%s, %s, 1)
+                    AND make_date(%s, %s, 1)
+                        + interval '1 month' - interval '1 day'
+                    AND us.username = %s
+                ) trn ON cat.id = trn.category_id
+                GROUP BY cat.name
+            ) tot
+            ORDER BY cat_name
+            """,
+            [request.user.username, year, month, year, month,
+            request.user.username]
+        )
 
     colours = generate_category_colours()
 
@@ -231,18 +264,36 @@ def get_month_days(request, month, year):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("home"))
 
-    results = Transactions_by_Day.objects.raw(
-        """
-        SELECT 1 as id, t.dt::date AS monthday
-        FROM generate_series(
-            make_date(%s, %s, 1)
-            ,make_date(%s, %s, 1) + interval '1 month' - interval '1 day'
-            ,interval '1 day'
-        ) AS t(dt)
-        """,
-        [year, month, year, month]
-    )
+    # only allow charts up to current date
+    if year == datetime.now().year and month == datetime.now().month:
+        results = Transactions_by_Day.objects.raw(
+            """
+            SELECT 1 as id, t.dt::date AS monthday
+            FROM generate_series(
+                make_date(%s, %s, 1)
+                ,CURRENT_DATE
+                ,interval '1 day'
+            ) AS t(dt)
+            """,
+            [year, month]
+        )
+        days = [res.monthday for res in results]
+        
+    else:
+        results = Transactions_by_Day.objects.raw(
+            """
+            SELECT 1 as id, t.dt::date AS monthday
+            FROM generate_series(
+                make_date(%s, %s, 1)
+                ,make_date(%s, %s, 1) + interval '1 month' - interval '1 day'
+                ,interval '1 day'
+            ) AS t(dt)
+            """,
+            [year, month, year, month]
+        )
+
     days = [res.monthday for res in results]
+
     return days
 
 
@@ -318,7 +369,8 @@ def get_month_dashboard(request, year, month):
     transactions = Transaction.objects.filter(
         user=request.user,
         transaction_date__year=year,
-        transaction_date__month=month
+        transaction_date__month=month,
+        transaction_date__lte = datetime.now()
         ).order_by("transaction_date")
 
     # calc the total expenditure in the given month
@@ -448,7 +500,8 @@ def get_year_dashboard(request, year):
         return HttpResponseRedirect(reverse("home"))
 
     transactions = Transaction.objects.filter(
-        user=request.user, transaction_date__year=year
+        user=request.user, transaction_date__year=year,
+        transaction_date__lte = datetime.now()
     )
 
     total_expenditure = 0
@@ -481,7 +534,7 @@ def get_yearly_split(request, year):
         """
         SELECT 1 AS id, cat_name, SUM(total_expenditure) AS yearly_total
         FROM daily_transactions trn
-        WHERE username = %s AND yr = %s
+        WHERE username = %s AND yr = %s AND day_of_year <= CURRENT_DATE
         GROUP BY cat_name
         ORDER BY cat_name
         """,
