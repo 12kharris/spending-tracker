@@ -370,7 +370,7 @@ def get_month_dashboard(request, year, month):
     current_year = datetime.now().year
     current_month = datetime.now().month
 
-    if year == current_year and month > current_month:
+    if (year == current_year and month > current_month) or (year < 2023):
         return HttpResponseRedirect(reverse('get_month_dashboard',
                                 args=[current_year, current_month]))
 
@@ -509,7 +509,7 @@ def get_year_dashboard(request, year):
 
     current_year = datetime.now().year
 
-    if year > current_year:
+    if year > current_year or year < 2023:
         return HttpResponseRedirect(reverse('get_year_dashboard',
                                 args=[current_year]))
 
