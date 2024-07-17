@@ -173,7 +173,9 @@ When a user clicks the 'cancel' button, the add form should be reset back to cle
 
 ### Responsive Testing
 The various pages were viewed using the chrome dev tools for various sized devices. Below are the monthly dasboard pages for large, medium and small screens respectively.
-
+![large](https://github.com/12kharris/spending-tracker/blob/86ee5d6e087b83a9a2616233ad7057e01138315d/README-Images/lg.png?raw=true)
+![medium](https://github.com/12kharris/spending-tracker/blob/86ee5d6e087b83a9a2616233ad7057e01138315d/README-Images/md.png?raw=true)
+![small](https://github.com/12kharris/spending-tracker/blob/86ee5d6e087b83a9a2616233ad7057e01138315d/README-Images/sm.png?raw=true)
 
 ## Deployment
  
@@ -233,11 +235,11 @@ The only known issue is when a transcation is added/edited/modified, the monthly
 - The next view issue encountered was where using django's ORM to query the model which the view was the db_table for never returned any objects. There was data in the view in the db but for whatever reason, no data was ever returned. As a result, I created a second model not attached to any db table where I could run raw SQL statements and this returned the data in the view.
 - I originally intended for the 'Add expenditure' form to be a collapsable like the expenditure table. However, I encountered a limitation of using a button to do this. The intention was to expand the form when the 'edit' button was clicked. In Javascript I would call the collapse.show() method which should only show the collapsable and not collapse it if it is already showing. However this was not occurring. When debugging, the event listener on the 'edit' button did not look at the current state of the page and so always thought the form was collapsed and would call the show() method which closed the form (I am unsure why show() would ever close a collapsable). To avoid this, the collapsable was abandoned for the form.
 - A few days before due date, the postgres server which hosts the database for this project was not allowing any new connections. This lead to a delay in development of the project. In the future, hosting my own postgres server would allow more control over issues that arise.
-- After the above issue was resolved, I could no longer connect to the database using pgAdmin. The connection would always timeout. As the deadline was approaching, data for the demo user was not entered for all months of the year. Therefore, to see the application with a wide variety of data for the demo user, months between 2023-08 and 2024-05 should be selected.
-- I could not apply the migrations which creates the daily_transactions view for unit testing as it is a raw psql statement but the test sqlLite db does not use psql.
+- I could not apply the migrations which creates the daily_transactions view for unit testing as it is a raw psql statement but the test sqlLite db does not use psql. As such, in the test environment the 0003 migration is not run.
 
 ## Future Features
-- Add multiple expenditures at a time - This is the main feature I would like to add. It would be a better user experience if more than one expedniture could be added at once by having an 'add another' button which duplicates the form, enabling multiple expenditures to be added at once.
+Below are features which I would like to add to the application in the future.
+- Add multiple expenditures at a time - This is the main feature I would like to add. It would be a better user experience if more than one expenditure could be added at once by having an 'add another' button which duplicates the form, enabling multiple expenditures to be added at once.
 - User cutomsiable categories - Another feature would be to give users the default categories and then allow them to change the category names and colours if they choose.
 - Direction of transaction - The db model is called 'transaction' rather than 'expenditure' to allow for a field on the model 'Direction' to eventually be added. This could dictate inflows as well as outflows so the app could also offer revenue streams as well as expedniture tracking. This could be one step to becoming a financial hub as opposed to just a spending tracker to a user.
 - Automatic category assignment - It would be nice to store some strings for each user and category for the references. If a user inputs a refernce, the app could recognise this input and automatically assign a category to it.
