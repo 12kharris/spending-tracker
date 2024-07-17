@@ -2,6 +2,7 @@
 # MoneyTree Spending Tracker
 MoneyTree is a website where users can create an account and then record their expenditures. From this, MoneyTree will store this information in a database and generate charts from the data for the user to get insights from. This information can be used to identify to the user any areas which they are spending too much on and should cut back, or gaining an undertsanding as to where their money goes over the months. They could also use this information for seeing seasonal changes in their spending and being able to effectively budget for this.
 
+The live site can be found at https://moneytree-spending-tracker-da63cdf02d44.herokuapp.com/
 
 ## Technologies Used
 The following technologies were used and their install commands listed next to them
@@ -22,6 +23,12 @@ The following programming languages were used for this project
 - Python3 - For simple database querying, view routing and view generation. Python is the language used by the Django framework
 - PSQL - For complex querying and database view creation
 
+## Acknowledgements
+All code which has been adapted from online sources has been commented with a link to the original source in each file.
+- Using Javascript to retrive data from a url and use in a chart: https://testdriven.io/blog/django-charts/
+- Replacing the save() method when not using a ModelForm: https://stackoverflow.com/questions/16443029/cant-save-a-form-in-django-object-has-no-attribute-save
+- Generating dates in psql: https://stackoverflow.com/questions/58769145/postgresql-with-recursive
+- Setting up the django project and installing needed packages was done by following the 'I think therefore I Blog' walkthrough project from Code Institute.
 
 ## Planning
 Before development, planning of the look of the application and the structure of its database was done to streamline development.
@@ -41,7 +48,7 @@ Below is a link to the Trello board which was used to list all development tasks
 
 https://trello.com/invite/b/lvzdh0BT/ATTI89fdb6d4cc73046678d01061a96ba7c0896AC760/moneytree-kanban-board
 
-Trello offers more functionality than GitHub projects but the tasks were copied over to GitHub projects in case the reader does not wish to create a Trello account
+Trello offers more functionality than GitHub projects but the tasks were copied over to GitHub projects in case the reader does not wish to create a Trello account. The GitHub project board can be found here: https://github.com/users/12kharris/projects/2/views/1
 
 ## Models
 Three models are used in the backend. These are the Category model, the Transaction model and the Transactions_by_Day model. The category model is responsible for the categories which a transaction can have. The Transaction model is the model which conatins all information about a transaction (or expenditure). It contains the amount, category (foreign key to Category model), a reference and the date of the transaction. Finally, the Transactions_by_Day model is an unmanaged model. It is a view which aggregates the different category's expenditures for every day of the year. This is the primary model which is used for the charts on the dashboard.
@@ -163,6 +170,10 @@ When the 'edit' button is pressed, the content of the transaction form should be
 When a user has scrolled and the 'add' form is off the page and 'edit' is pressed, the page should scroll to the 'add' form for a good user experience. To test this, the page was scrolled so the form was off the page and 'edit' was pressed. The result of this test was a PASS as the page automatically scrolled to the 'add' form.
 #### Cancel button should clear the 'add' form
 When a user clicks the 'cancel' button, the add form should be reset back to clear and if applicable, the 'update' button should return to an 'add' button. To test this, the form was filled out and the cancel button pressed. In this case the test PASSed as the form was reset. Additionally, an 'edit' button was pressed which filled in the form and changed the 'add' button to an 'update' button. The cancel button was then clicked and the form was reset and the 'update' button was changed back to an 'add' button. The form was then filled out and the 'add' button pressed and the transaction was successfully added which is a PASS.
+
+### Responsive Testing
+The various pages were viewed using the chrome dev tools for various sized devices. Below are the monthly dasboard pages for large, medium and small screens respectively.
+
 
 ## Deployment
  
