@@ -179,7 +179,7 @@ The various pages were viewed using the chrome dev tools for various sized devic
 
 ## Deployment
  
-Whitenoise was used to handle static files in deployment. The website was deployed using Heroku. The deployment steps are as follows
+The package whitenoise was used to handle static files in deployment. The website was deployed using Heroku. The deployment steps are as follows
 - Run python3 manage.py collectstatic to collect all static files and store them in the staticfiles directory for whitenoise
 install gunicorn
 - Add a procfile with a command of web: gunicorn moneytree.wsgi in it.
