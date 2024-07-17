@@ -154,12 +154,22 @@ When a user clicks the 'cancel' button, the add form should be reset back to cle
 
 ## Code Validation
 ### HTML
+Using W3C, all pages had no errors from my custome HTML. The only errors are from HTML loaded with the font-awesome scripts at the bottom of the page.
+
+HTML PICTURE
 
 ### CSS
 The CSS code passed the W3C validator with no errors
 
+CSS IMAGE
+
 ### Javascript
-The only errors were the use of the 'Chart' type. This is handled by the ChartJS CDN so can be ignored. The only other messages were warnings from using const, let and arrow functions (e.g. "'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).")
+Using JSHint, the only errors were the use of the 'Chart' type. This is handled by the ChartJS CDN so can be ignored. The only other messages were warnings from using const, let and arrow functions (e.g. "'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).")
+
+JS IMAGE
+
+### Python
+
 
 ## Problems encountered
 - There was an issue with setting up the db view for daily spending. The view required a change so the migration was rolled back. However, when running the migration again, django did not run the migration to recreate the view as it thought it was already implemented. Checking the migrations table in the db it believed the migration had been run but the view did not exist. After deleting the migration from the db table and re-running the migrations it errored saying that the object it was trying to create (the view) already existed, despite it not existing on the db. To resolve this, I abandoned that model and made a new view with the same logic but a different name.

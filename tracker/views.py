@@ -205,7 +205,7 @@ def get_monthly_split(request, year, month):
             ORDER BY cat_name
             """,
             [request.user.username, year, month,
-            request.user.username]
+             request.user.username]
         )
 
     else:
@@ -237,7 +237,7 @@ def get_monthly_split(request, year, month):
             ORDER BY cat_name
             """,
             [request.user.username, year, month, year, month,
-            request.user.username]
+             request.user.username]
         )
 
     colours = generate_category_colours()
@@ -278,7 +278,7 @@ def get_month_days(request, month, year):
             [year, month]
         )
         days = [res.monthday for res in results]
-        
+
     else:
         results = Transactions_by_Day.objects.raw(
             """
@@ -329,13 +329,14 @@ def route_to_chosen_dashboard(request):
                 return HttpResponseRedirect(reverse('get_year_dashboard',
                                             args=[year]))
             elif int(year) > current_year or (year == current_year
-                                         and int(month) > int(current_month)):
+                                              and int(month) >
+                                              int(current_month)):
                 return HttpResponseRedirect(reverse('get_month_dashboard',
                                                     args=[current_year,
                                                           current_month]))
             else:
                 return HttpResponseRedirect(reverse('get_month_dashboard',
-                                             args=[year, month]))
+                                            args=[year, month]))
 
     else:
         return HttpResponseNotFound("Page not found")
@@ -370,7 +371,7 @@ def get_month_dashboard(request, year, month):
         user=request.user,
         transaction_date__year=year,
         transaction_date__month=month,
-        transaction_date__lte = datetime.now()
+        transaction_date__lte=datetime.now()
         ).order_by("transaction_date")
 
     # calc the total expenditure in the given month
@@ -501,7 +502,7 @@ def get_year_dashboard(request, year):
 
     transactions = Transaction.objects.filter(
         user=request.user, transaction_date__year=year,
-        transaction_date__lte = datetime.now()
+        transaction_date__lte=datetime.now()
     )
 
     total_expenditure = 0
