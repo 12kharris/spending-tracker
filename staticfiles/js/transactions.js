@@ -68,7 +68,7 @@ for (let button of deleteButtons) {
       deleteConfirm.href = `transaction_delete/${transaction_id}`;
       deleteModal.show();
     });
-  }
+}
 
 //clear the form when cancel is called and remove edit form action
 cancel_button.addEventListener("click", (e) => {
@@ -80,3 +80,4 @@ cancel_button.addEventListener("click", (e) => {
     transaction_form.removeAttribute("Action");
     submit_button.innerText = "Add Expenditure";
 });
+

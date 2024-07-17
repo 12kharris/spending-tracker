@@ -1,3 +1,4 @@
+document.readyState
 const edit_buttons = document.getElementsByClassName("btn-edit-transaction");
 const submit_button = document.getElementById("btn-submit");
 const cancel_button = document.getElementById("btn-cancel");
@@ -27,6 +28,7 @@ datepicker.setAttribute("max", `${yr}-${fmt_month}-${fmt_day}`);
  */
 for(let button of edit_buttons) {
     button.addEventListener("click", (e) => {
+        console.log("click");
         let transaction_id = e.target.getAttribute("data-transaction_id");
         let transaction_amount = document.getElementById(`amount-${transaction_id}`).innerText;
         let transaction_reference = document.getElementById(`reference${transaction_id}`).innerText;
@@ -68,7 +70,7 @@ for (let button of deleteButtons) {
       deleteConfirm.href = `transaction_delete/${transaction_id}`;
       deleteModal.show();
     });
-  }
+}
 
 //clear the form when cancel is called and remove edit form action
 cancel_button.addEventListener("click", (e) => {
@@ -80,3 +82,4 @@ cancel_button.addEventListener("click", (e) => {
     transaction_form.removeAttribute("Action");
     submit_button.innerText = "Add Expenditure";
 });
+
