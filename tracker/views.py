@@ -367,6 +367,13 @@ def get_month_dashboard(request, year, month):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("home"))
 
+    current_year = datetime.now().year
+    current_month = datetime.now().month
+
+    if year == current_year and month > current_month:
+        return HttpResponseRedirect(reverse('get_month_dashboard',
+                                args=[current_year, current_month]))
+
     transactions = Transaction.objects.filter(
         user=request.user,
         transaction_date__year=year,
@@ -499,6 +506,12 @@ def get_year_dashboard(request, year):
     """
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("home"))
+
+    current_year = datetime.now().year
+
+    if year > current_year:
+        return HttpResponseRedirect(reverse('get_year_dashboard',
+                                args=[current_year]))
 
     transactions = Transaction.objects.filter(
         user=request.user, transaction_date__year=year,
