@@ -73,7 +73,7 @@ for (let button of deleteButtons) {
 //clear the form when cancel is called and remove edit form action
 cancel_button.addEventListener("click", (e) => {
     transaction_form_amount.value = 0.01;
-    transaction_form_category.value = 1;
+    transaction_form_category.value = "Car";
     transaction_form_reference.value = "";
     transaction_form_date.value = "dd/mm/yyyy";
 

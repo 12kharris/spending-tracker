@@ -2,9 +2,6 @@
 # MoneyTree Spending Tracker
 MoneyTree is a website where users can create an account and then record their expenditures. From this, MoneyTree will store this information in a database and generate charts from the data for the user to get insights from. This information can be used to identify to the user any areas which they are spending too much on and should cut back, or gaining an undertsanding as to where their money goes over the months. They could also use this information for seeing seasonal changes in their spending and being able to effectively budget for this.
 
-Things to include
-- mockups and diagrams from planning
-
 
 ## Technologies Used
 The following technologies were used and their install commands listed next to them
@@ -32,12 +29,12 @@ Before development, planning of the look of the application and the structure of
 ### Front End Plan
 Below is a simple wireframe which was created as a concept for the look of the main page the user would use: The dashboard.
 
-WIREFRAME HERE
+![wireframe](https://github.com/12kharris/spending-tracker/blob/50f67b6f41e99c567d8435cd7807ef7ae9e17108/README-Images/wireframe.png?raw=true)
 
 ### Database
-Below is an entity relationship diagram for how the first version of the database structure would look.
+Below is an entity relationship diagram for how the database structure would look.
 
-DIAGRAM HERE
+![ERD](https://github.com/12kharris/spending-tracker/blob/0d8ad3401e0003ee0786c04de8c6d12e1b3239a8/README-Images/ERD.png?raw=true)
 
 ### User Stories
 Below is a link to the Trello board which was used to list all development tasks which were identified for this project.
@@ -46,15 +43,28 @@ https://trello.com/invite/b/lvzdh0BT/ATTI89fdb6d4cc73046678d01061a96ba7c0896AC76
 
 Trello offers more functionality than GitHub projects but the tasks were copied over to GitHub projects in case the reader does not wish to create a Trello account
 
+## Models
+Three models are used in the backend. These are the Category model, the Transaction model and the Transactions_by_Day model. The category model is responsible for the categories which a transaction can have. The Transaction model is the model which conatins all information about a transaction (or expenditure). It contains the amount, category (foreign key to Category model), a reference and the date of the transaction. Finally, the Transactions_by_Day model is an unmanaged model. It is a view which aggregates the different category's expenditures for every day of the year. This is the primary model which is used for the charts on the dashboard.
+
 
 ## Features
-This section outlines the various features of the MoneyTree application. **If using the demo user, data has been entered from mid 2023 to May 2024**
+This section outlines the various features of the MoneyTree application. 
 
 ### Home Page
 The home page contains content for users who do not have an account. All features of the application can only be used if a user has an account. The page uses images to show the various features of the app with a short explanation of the feature. The features detailed include: the monthly spending chart, the spending category Pie chart, the daily spending stacked bar chart and the adding, updating and deleting of expenditures.
 
+![home 1](https://github.com/12kharris/spending-tracker/blob/50f67b6f41e99c567d8435cd7807ef7ae9e17108/README-Images/home%201.png?raw=true)
+
+![home 2](https://github.com/12kharris/spending-tracker/blob/50f67b6f41e99c567d8435cd7807ef7ae9e17108/README-Images/home%202.png?raw=true)
+
 ### Account Registration
 MoneyTree requires the creation of an account to access the platform's features. For the CodeInstitute examiner, login credentials for a demo user will be provided. The handling of accounts is done through the Django Allauth package. 
+
+![sign up](https://github.com/12kharris/spending-tracker/blob/256a6701ea2c0d198b196c963752557c5fa344d9/README-Images/register.png?raw=true)
+
+![sign in](https://github.com/12kharris/spending-tracker/blob/7b32e836e33316b211adacd1ac4a09bd552537a8/README-Images/sign%20in.png?raw=true)
+
+![sign out](https://github.com/12kharris/spending-tracker/blob/7b32e836e33316b211adacd1ac4a09bd552537a8/README-Images/sign%20out.png?raw=true)
 
 #### Security
 The backend logic checks the login state of all requests which connect to the database. If a user is not logged in and tries to navigate to any of the URLs which query the database, they are returned to the home page before any other logic is carried out.
@@ -68,13 +78,15 @@ The dashboard navigation link automatically navigates to the current month's das
 #### Year Dashboard
 The yearly dashboard provides insights to a user's spending over an entire year. It features a line chart with the total expenditure for each month during the year, up to the present month. 
 
-CHART IMAGE
+![line chart](https://github.com/12kharris/spending-tracker/blob/9534814b15b82f949504200cbc8fbbf82debaf5a/README-Images/line%20chart.png?raw=true)
 
 At the top of the page is a ribbon showing the year and the total expenditure for that year so far.
 
+![ribbon](https://github.com/12kharris/spending-tracker/blob/ba246c61b377a7f01a271d5a1d886e30d6edf78c/README-Images/ribbon.png?raw=true)
+
 Next to the line chart is a pie chart which shows the distribution of spending across the categories over the year.
 
-PIE CHART
+![year pie](https://github.com/12kharris/spending-tracker/blob/c0d5378202b205fb92540550f3ccbf4032a1eefa/README-Images/yearly%20pie.png?raw=true)
 
 All charts are generated from a database view of the epxenditures. The SQL for the view can be found in the 0003 migrations file for the 'tracker' app. As such, the charts will automatically update when more data is added.
 
@@ -85,38 +97,38 @@ The monthly dashboard shows the breakdown of spending for a given month. This is
 #### Daily Spending Stacked Bar Chart
 The monthly dashboard page features a stacked bar chart which shows the total expenditure for each day of the month and what categories made up that day of spending. When hovered over, each category in a bar will show its expenditure amount.
 
-STACKED BAR
+![stacked bar](https://github.com/12kharris/spending-tracker/blob/c0d5378202b205fb92540550f3ccbf4032a1eefa/README-Images/daily-chart.png?raw=true)
 
 #### Monthly Pie Chart
 Similar to the yearly dashboard, the monthly dashboard features a pie chart with the distribution of spending over the month across the different spending catgeories.
 
-PIE CHART
+![month pie](https://github.com/12kharris/spending-tracker/blob/1d6a2d597942079fa5d97266715fda04d48c970f/README-Images/month-pie.png?raw=true)
 
 #### Add Expenditures
 The page features a simple form for a user to add an expenditure to. The 'amount' field supports up to 2 decimal places and there is logic which handles entires which do not fit this requirement. The 'reference' category is a text field where the user can enter anything they wish to identify what the expenditure was. The 'category' field is a dropdown list for every category that is defined. There is also a date picker for the date of the expenditure. For a better user experience, the user can enter any date of expenditure between 1st Jan 2023 and now rather than only allowing for entering data for the current month. Finally there is a button to add the expenditure and a button to cancel which clears the form.
 
-ADD FORM
+![add form](https://github.com/12kharris/spending-tracker/blob/3f120376857d89f35086c214613211592035b964/README-Images/add.png?raw=true)
 
 When submitted, the page will refresh and a message will show at the top of the page detailing whether the expenditure was successfully added or not. As the charts are based on a database view, they will update to show the new expedniture (if it was added in the selected month).
 
-MESSAGE
+![add message](https://github.com/12kharris/spending-tracker/blob/4170087f69dfbacfe94f32d38f501e7477419a3e/README-Images/add%20message.png?raw=true)
 
 #### View Expenditures
 Below the add form is a button to show all expenditures for that month. This is a collapsable table. In the table the amount, reference, category and date are shown. The categories are colour coded to match the charts. There is also buttons to edit and delete any expenditure.
 
-TABLE
+![table](https://github.com/12kharris/spending-tracker/blob/4170087f69dfbacfe94f32d38f501e7477419a3e/README-Images/transaction%20table.png?raw=true)
 
 #### Edit Expenditures
 When a user clicks to edit a given transaction, the add form is populated with the data for that expenditure. The page will automatically focus on this form if it is off the screen. The 'add' button is changed to an 'update' button and 'cancel' will reset the form back to the 'add' form state. 
 
-EDIT FORM
+![edit form](https://github.com/12kharris/spending-tracker/blob/3f120376857d89f35086c214613211592035b964/README-Images/update.png?raw=true)
 
 When a user submits an edit, the page will refresh and a message will be show at the top of the page showing whether the edit was successful. The charts will also show the newly edited data.
 
 #### Delete Expenditures
 When a user chooses to delete an expenditure, a modal will appear with a confirmation message asking if they are sure they want to delete the expenditure. If the choose to do so, the expenditure will be permenantly deleted and the page refreshed. A message will appear detailing if the expenditure was successfully deleted.
 
-DELETE MODAL
+![modal](https://github.com/12kharris/spending-tracker/blob/57a0bd857e616babcce8dd46996d0ed4e4dff1bb/README-Images/modal.png?raw=true)
 
 ## Testing
 ### Python Manual Testing
@@ -152,24 +164,53 @@ When a user has scrolled and the 'add' form is off the page and 'edit' is presse
 #### Cancel button should clear the 'add' form
 When a user clicks the 'cancel' button, the add form should be reset back to clear and if applicable, the 'update' button should return to an 'add' button. To test this, the form was filled out and the cancel button pressed. In this case the test PASSed as the form was reset. Additionally, an 'edit' button was pressed which filled in the form and changed the 'add' button to an 'update' button. The cancel button was then clicked and the form was reset and the 'update' button was changed back to an 'add' button. The form was then filled out and the 'add' button pressed and the transaction was successfully added which is a PASS.
 
+## Deployment
+ 
+Whitenoise was used to handle static files in deployment. The website was deployed using Heroku. The deployment steps are as follows
+- Run python3 manage.py collectstatic to collect all static files and store them in the staticfiles directory for whitenoise
+install gunicorn
+- Add a procfile with a command of web: gunicorn moneytree.wsgi in it.
+- Set Debug to False
+- Git commit and push
+- On Heroku, include the following config vars: DATABASE_URL and SECRET_KEY with their respective values.
+- Deploy the branch
+
 ## Code Validation
 ### HTML
 Using W3C, all pages had no errors from my custome HTML. The only errors are from HTML loaded with the font-awesome scripts at the bottom of the page.
 
-HTML PICTURE
+![HTML valid](https://github.com/12kharris/spending-tracker/blob/57a0bd857e616babcce8dd46996d0ed4e4dff1bb/README-Images/HTML%20validation.png?raw=true)
+The above error is from a font awesome script
 
 ### CSS
 The CSS code passed the W3C validator with no errors
 
-CSS IMAGE
+![CSS](https://github.com/12kharris/spending-tracker/blob/1214f256926ac517fba5a90b85029af673d6ba5b/README-Images/CSS.png?raw=true)
 
 ### Javascript
 Using JSHint, the only errors were the use of the 'Chart' type. This is handled by the ChartJS CDN so can be ignored. The only other messages were warnings from using const, let and arrow functions (e.g. "'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).")
 
-JS IMAGE
+![JS hint](https://github.com/12kharris/spending-tracker/blob/8e493b0398ae98f886329a126d357e6bc90aea01/README-Images/JS%20hint.png?raw=true)
+The above is an example of the JS hint output. All of the js files shared these warnings.
 
 ### Python
 
+All python files I have modified and their PEP8 validation results are shown below
+#### charts.py
+![charts pep8](https://github.com/12kharris/spending-tracker/blob/8e493b0398ae98f886329a126d357e6bc90aea01/README-Images/charts%20pep8.png?raw=true)
+
+#### forms.py
+![forms pep8](https://github.com/12kharris/spending-tracker/blob/8e493b0398ae98f886329a126d357e6bc90aea01/README-Images/forms%20pep8.png?raw=true)
+
+#### models.py
+![models pep8](https://github.com/12kharris/spending-tracker/blob/8e493b0398ae98f886329a126d357e6bc90aea01/README-Images/models%20pep8.png?raw=true)
+
+#### urls.py
+![urls pep8](https://github.com/12kharris/spending-tracker/blob/8e493b0398ae98f886329a126d357e6bc90aea01/README-Images/urls%20pep8.png?raw=true)
+
+#### views.py
+The only errors for views.py were for import statements. No matter which order I wrote the import statements, these errors would persist.
+![views pep8](https://github.com/12kharris/spending-tracker/blob/8e493b0398ae98f886329a126d357e6bc90aea01/README-Images/views%20pep8.png?raw=true)
 
 ## Problems encountered
 - There was an issue with setting up the db view for daily spending. The view required a change so the migration was rolled back. However, when running the migration again, django did not run the migration to recreate the view as it thought it was already implemented. Checking the migrations table in the db it believed the migration had been run but the view did not exist. After deleting the migration from the db table and re-running the migrations it errored saying that the object it was trying to create (the view) already existed, despite it not existing on the db. To resolve this, I abandoned that model and made a new view with the same logic but a different name.
