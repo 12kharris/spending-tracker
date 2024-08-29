@@ -44,7 +44,7 @@ def get_transactions_by_day(request, month, year):
     daily_dining_out = get_transactions_by_day_by_category(request,
                                                            month=month,
                                                            year=year,
-                                                           category="Dining"
+                                                           category="Dining "
                                                            + "Out"
                                                            )
     daily_subscriptions = get_transactions_by_day_by_category(request,
@@ -381,11 +381,6 @@ def get_month_dashboard(request, year, month):
         transaction_date__lte=datetime.now()
         ).order_by("transaction_date")
 
-    # calc the total expenditure in the given month
-    total_expenditure = 0
-    for trn in transactions:
-        total_expenditure += trn.amount
-
     # handle submission of 'add' form to create new transactions
     if request.method == "POST":
         # convert all submitted 'amounts' to 2 dp
@@ -421,6 +416,11 @@ def get_month_dashboard(request, year, month):
             )
 
     transaction_form = TransactionForm()
+
+    # calc the total expenditure in the given month
+    total_expenditure = 0
+    for trn in transactions:
+        total_expenditure += trn.amount
 
     # get all years for options in form for choosing date
     years = [yr for yr in range(2023, datetime.now().year + 1)]
